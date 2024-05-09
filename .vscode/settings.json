@@ -1,0 +1,14 @@
+{
+    "terminal.integrated.defaultProfile.windows": "PowerShell",
+    "terminal.integrated.profiles.windows": {
+        "PowerShell": {
+            "path": "powershell.exe",
+            "args": [
+                "-NoExit",
+                "-Command",
+                "& 'C:\\Users\\jeffr\\Desktop\\Programming\\JT-Poker\\.JTP_env\\Scripts\\Activate.ps1'"
+            ]
+        }
+    }
+  }
+  
