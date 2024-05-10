@@ -3,6 +3,7 @@ from .dealer import Dealer
 class PlayGame(object):
     def __init__(self, chips=500, ante=5, opponents=["John Wayne", "Jeff Tabb", "Ted Williams"]):
         # store input parameters
+        #print("PlayGame is executing...")  # Debug print
         self.OPPONENTS = opponents
         self.CHIPS = chips
         self.ANTE = ante
@@ -20,6 +21,7 @@ class PlayGame(object):
             self.EndGame()
 
     def Configuration(self):
+        #print("Configuring game...")  # Debug print
         # initialise dealer
         self.dealer = Dealer(len(self.OPPONENTS)+1)
         # get name and begin tracking human
@@ -113,3 +115,7 @@ class PlayGame(object):
     
     def EndGame(self):
         print("[END] Thanks for playing!")
+
+if __name__ == "__main__":
+    #print("File is trying to execute...")  # Debug print
+    game = PlayGame()
