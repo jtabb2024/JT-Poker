@@ -1,9 +1,9 @@
-from .dealer import Dealer
+from ..game_logic.dealer import Dealer
 
 class PlayGame(object):
     def __init__(self, chips=500, ante=5, opponents=["John Wayne", "Jeff Tabb", "Ted Williams"]):
         # store input parameters
-        #print("PlayGame is executing...")  # Debug print
+        print("PlayGame is executing...")  # Debug print
         self.OPPONENTS = opponents
         self.CHIPS = chips
         self.ANTE = ante

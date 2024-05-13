@@ -1,5 +1,5 @@
 from random import shuffle
-from .dealer import Dealer
+from JT_poker.game_logic.dealer import Dealer
 from .play_game import PlayGame
 
 class SpectateGame(PlayGame):

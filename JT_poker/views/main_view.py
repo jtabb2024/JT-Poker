@@ -1,8 +1,8 @@
 from django.shortcuts import render
-from JT_poker.game_logic.play_game import PlayGame
-from JT_poker.game_logic.spectate_game import SpectateGame
+from .play_game import PlayGame
+from .spectate_game import SpectateGame
 
-def game_view(request):
+def Start_game(request):
     game_output = ""
     if request.method == "POST":
         if 'play' in request.POST:

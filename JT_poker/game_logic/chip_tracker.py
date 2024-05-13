@@ -36,6 +36,8 @@ class ChipTracker(object):
 
     def HasEnough(self, name, amount):
         # check if player has enough chips
+        print("Amount:", amount, "Type:", type(amount))
+        print("Stack:", self.players[name]["stack"], "Type:", type(self.players[name]["stack"]))
         return True if amount <= self.players[name]["stack"] else False
 
     def Bet(self, name, amount):

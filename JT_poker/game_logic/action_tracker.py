@@ -57,44 +57,25 @@ class ActionTracker(object):
     def SelectAmount(self, name, info):
         # determine species and get a bet amount request
         if name in self.beings["humans"]:
-            return {
-                "info": {
-                    "cards": info['self']['hand']['cards'],
-                    "pot": info['game']['pot'],
-                    "chips_left": info['self']['chips']['stack'],
-                    "call_amount": info['game']['call']
-                },
-                "prompt": "How much would you like to put in the pot?"
-            }
+            print(f"[INFO] Your cards are {info['self']['hand']['cards']}")
+            print(f"[INFO] There are {info['game']['pot']} chips in the pot.")
+            print(f"[INFO] You have {info['self']['chips']['stack']} chips remaining.")
+            print(f"[INFO] The amount to call is {info['game']['call']} chips.")
+            amount = int(input("How much would you like to put in the pot?"))
         else:
             amount = choice([0, info['self']['chips']['stack'], info['game']['call'], info['game']['pot'], 2*info['game']['pot'], 2*info['game']['call']])
-            return {"amount": amount}
+        return amount
 
-    def SelectDiscards(self, name, info, mask=None):
-        # Determine species to ask for discards from
-        # Human Players: When a human player is playing, the method initially checks if a mask has been provided
-        # If the mask is already provided (from the frontend), it uses this mask to compute the cards to discard.
-        # If no mask is provided, it sends back the current cards with a prompt asking for the mask.
-        # Bot Players: For bots, it continues to randomly choose discards as it did before.
-        # Implementation Notes:
-        # Frontend Responsibility: Your web interface needs to handle displaying the cards and collecting the mask as user input, then sending this mask back to the server.
-        # Enforce that discard selection is always 5 characters/integers long and only has 0's or 1's with 1's being the card to discard
-        # Backend Processing: Upon receiving the mask, your backend will call this method again, passing the received mask to actually compute the discards.
-        # Need to use view to code the input "prompt": "Which cards would you like to swap? (00000 for none, 11111 for all)"  only if a human player cna you self.beings to check
-        # If human then send Mask if not then send no mask
-
+    def SelectDiscards(self, name, info):
+        # determine species to ask for discards from
         if name in self.beings["humans"]:
-            if mask is None:
-                # In a real application, you might handle this case differently,
-                # possibly raising an error or logging a warning because a mask
-                # is required for human players to specify discards.
-                raise ValueError("A mask must be provided for human players.")
-            # Compute which cards to discard based on the mask provided by the frontend.
-            # need place to grab this data print(f"[INFO] Your cards are {info['self']['hand']['cards']}")
-            discards = [info['self']['hand']['cards'][i] for i, v in enumerate(mask) if int(v)]
+            # give info and get user input from human
+            print(f"[INFO] Your cards are {info['self']['hand']['cards']}")
+            mask = input("Which cards would you like to swap? (00000 for none, 11111 for all)")
+            discards =  [info['self']['hand']['cards'][i] for i, v in enumerate(mask) if int(v)]
         else:
-            # Randomly decide discards for bots
-            discards = [info['self']['hand']['cards'][i] for i in range(5) if choice([True, False])]
+            # get random input from bots
+            discards = [info['self']['hand']['cards'][i] for i in range(5) if choice([True,False])]
         return discards
 
     def SetAllIn(self, name):
