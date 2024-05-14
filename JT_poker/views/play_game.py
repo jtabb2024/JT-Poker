@@ -9,8 +9,10 @@ class PlayGame(object):
         self.CHIPS = chips
         self.ANTE = ante
         
-        # initialise game
+        # initialise messages
         self.messages = MessageTracker()  # Add MessageTracker
+        
+        # initialise game
         self.Configuration()
 
         # gameloop
@@ -29,7 +31,7 @@ class PlayGame(object):
     def Configuration(self):
         #print("Configuring game...")  # Debug print
         # initialise dealer
-        self.dealer = Dealer(len(self.OPPONENTS)+1)
+        self.dealer = Dealer(len(self.OPPONENTS) + 1, self.messages)
         # get name and begin tracking human
         player = input("What's your name?")
         self.HUMAN = player

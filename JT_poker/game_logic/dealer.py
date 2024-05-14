@@ -9,13 +9,13 @@ from .action_tracker import ActionTracker
 from .message_tracker import MessageTracker
 
 class Dealer(object):
-    def __init__(self, num_seats=6):
+    def __init__(self, num_seats=6, message_tracker=None):
         # initialise trackers
         self.cards = HandTracker()
         self.seats = SeatTracker(num_seats)
         self.chips = ChipTracker()
         self.action = ActionTracker()
-        self.messages = MessageTracker()  # Add MessageTracker
+        self.messages = message_tracker
         
     def MoveButton(self):
         # move button to next player and log

@@ -253,6 +253,7 @@ class HandTracker(object):
         
         """
         # assert 5 card hands
+        print("DISCARD LIST:", discards)
         if len(hand) != 5 or len(discards) > 5:
             raise Exception("Unknown variant of poker.")
         # the whole hand cannot be discarded
