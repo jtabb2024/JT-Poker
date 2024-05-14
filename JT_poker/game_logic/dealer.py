@@ -6,6 +6,7 @@ from .hand_tracker import HandTracker
 from .seat_tracker import SeatTracker
 from .chip_tracker import ChipTracker
 from .action_tracker import ActionTracker
+from .message_tracker import MessageTracker
 
 class Dealer(object):
     def __init__(self, num_seats=6):
@@ -14,16 +15,19 @@ class Dealer(object):
         self.seats = SeatTracker(num_seats)
         self.chips = ChipTracker()
         self.action = ActionTracker()
+        self.messages = MessageTracker()  # Add MessageTracker
         
     def MoveButton(self):
         # move button to next player and log
         self.seats.MoveButton()
         player = self.seats.button["player"]
-        print(f"[BUTTON] The button was given to {player}.")
+        print(f"[BUTTON] The button was given to {player}.") # remove this when ready and all other print statements
+        # self.messages.add_message(f"[BUTTON] The button was given to {player}.")
 
     def ShuffleDeck(self):
         self.cards.ShuffleDeck()
         print(f"[CARDS] The deck has been shuffled.")
+        # self.messages.add_message(f"[CARDS] The deck has been shuffled.")
         
     def DealHands(self):
         # determine players in the round and begin tracking
@@ -33,6 +37,7 @@ class Dealer(object):
         self.cards.DealPlayersIn()
         self.cards.EvaluatePlayersIn()
         print(f"[CARDS] Hands have been dealt.")
+        # self.messages.add_message(f"[CARDS] Hands have been dealt.")
         # initialise player statuses
         self.action.NewRound(names)
     
@@ -45,8 +50,10 @@ class Dealer(object):
             # log approved request
             if discards:
                 print(f"[CARDS] {name} swapped {len(discards)} cards.")
+                # self.messages.add_message(f"[CARDS] {name} swapped {len(discards)} cards.")
             else:
                 print(f"[CARDS] {name} didn't swap any cards.")
+                # self.messages.add_message(f"[CARDS] {name} didn't swap any cards.")
             return True
         return False
         
@@ -54,6 +61,7 @@ class Dealer(object):
         # collect all cards and log
         self.cards.CollectCards()
         print(f"[CARDS] Cards have been collected.")
+        # self.messages.add_message(f"[CARDS] Cards have been collected.")
         
     def TakeAnte(self):
         # take ante from players
@@ -63,9 +71,11 @@ class Dealer(object):
             # log all-in or not
             if status["bet_all"]:
                 print(f"[ANTE] The ante forced {name} to go all-in with {amount} chips!")
+                # self.messages.add_message(f"[ANTE] The ante forced {name} to go all-in with {amount} chips!")
                 self.action.SetAllIn(name)
             elif status["bet_something"]:
                 print(f"[ANTE] {name} paid {amount} chips for the ante.")
+                # self.messages.add_message(f"[ANTE] {name} paid {amount} chips for the ante.")
     
     def TakeBet(self, name, amount):
         # act on bet request and return success or not
