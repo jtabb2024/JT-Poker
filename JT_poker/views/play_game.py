@@ -1,4 +1,5 @@
 from ..game_logic.dealer import Dealer
+from ..game_logic.message_tracker import MessageTracker
 
 class PlayGame(object):
     def __init__(self, chips=500, ante=5, opponents=["John Wayne", "Jeff Tabb", "Ted Williams"]):
@@ -8,7 +9,8 @@ class PlayGame(object):
         self.CHIPS = chips
         self.ANTE = ante
         
-        # initialise game 
+        # initialise game
+        self.messages = MessageTracker()  # Add MessageTracker
         self.Configuration()
 
         # gameloop
@@ -18,6 +20,10 @@ class PlayGame(object):
             self.BettingPhase("postflop")
             self.EvaluationPhase()
         else:
+            message = self.messages.get_messages()
+            print("*****START OF message*******")
+            print(message)
+            print("*****END OF message*****")
             self.EndGame()
 
     def Configuration(self):
