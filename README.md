@@ -7,3 +7,4 @@
 
 # Other helpful tips
 # pip freeze > requirements.txt will create a requirements txt file so the project can be recreated with proper libraries
+# 
