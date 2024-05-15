@@ -9,7 +9,7 @@ from .action_tracker import ActionTracker
 from .message_tracker import MessageTracker
 
 class Dealer(object):
-    def __init__(self, num_seats=6, message_tracker=None):
+    def __init__(self, message_tracker: MessageTracker, num_seats=6):
         # initialise trackers
         self.cards = HandTracker()
         self.seats = SeatTracker(num_seats)

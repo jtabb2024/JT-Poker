@@ -3,6 +3,7 @@ from itertools import groupby
 from math import inf
 from random import choice, shuffle
 from .chip_tracker import ChipTracker
+from .message_tracker import MessageTracker
 from .card import Card
 
 class ActionTracker(object):

@@ -31,7 +31,7 @@ class PlayGame(object):
     def Configuration(self):
         #print("Configuring game...")  # Debug print
         # initialise dealer
-        self.dealer = Dealer(len(self.OPPONENTS) + 1, self.messages)
+        self.dealer = Dealer(self.messages, len(self.OPPONENTS) + 1)
         # get name and begin tracking human
         player = input("What's your name?")
         self.HUMAN = player
