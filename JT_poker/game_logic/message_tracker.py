@@ -1,6 +1,15 @@
+# JT_poker/game_logic/message_tracker.py
 class MessageTracker:
+    _instance = None
+
+    def __new__(cls, *args, **kwargs):
+        if not cls._instance:
+            cls._instance = super(MessageTracker, cls).__new__(cls, *args, **kwargs)
+        return cls._instance
+
     def __init__(self):
-        self.messages = []
+        if not hasattr(self, 'messages'):
+            self.messages = []
 
     def add_message(self, message):
         self.messages.append(message)

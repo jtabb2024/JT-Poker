@@ -41,7 +41,18 @@ INSTALLED_APPS = [
 
     # my apps
     'JT_poker.apps.JtPokerConfig',
+
+    #3rd Party
+    'channels',
 ]
+
+ASGI_APPLICATION = 'JTPoker_project.asgi.application'
+
+CHANNEL_LAYERS = {
+    'default': {
+        'BACKEND': 'channels.layers.InMemoryChannelLayer',
+    },
+}
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
