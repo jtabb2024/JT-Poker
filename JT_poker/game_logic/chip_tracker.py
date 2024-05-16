@@ -1,3 +1,5 @@
+from .message_tracker import MessageTracker
+
 class ChipTracker(object):
     def __init__(self):
         # initialise player and rules trackers

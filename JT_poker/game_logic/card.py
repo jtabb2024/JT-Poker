@@ -1,3 +1,5 @@
+from .message_tracker import MessageTracker
+
 class Card(object):
     """
     A class to represent a card.

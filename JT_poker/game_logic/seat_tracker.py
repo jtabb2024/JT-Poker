@@ -1,4 +1,5 @@
 from random import shuffle
+from .message_tracker import MessageTracker
 
 class SeatTracker(object):
     """
