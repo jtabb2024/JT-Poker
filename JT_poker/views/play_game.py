@@ -29,10 +29,6 @@ class PlayGame(object):
             self.BettingPhase("postflop")
             self.EvaluationPhase()
         else:
-            message = self.mtracker.get_messages()
-            print("*****START OF message*******")
-            print(message)
-            print("*****END OF message*****")
             self.EndGame()
 
     def Configuration(self):
