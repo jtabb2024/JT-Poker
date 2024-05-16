@@ -3,12 +3,12 @@ from ..game_logic.message_tracker import MessageTracker
 
 class PlayGame(object):
     def __init__(self, chips=500, ante=5, opponents=["John Wayne", "Jeff Tabb", "Ted Williams"]):
-        # initialise messages
-        self.messages = MessageTracker.instance() # Get the message_tracker game instance
-        self.messages.add_message("PlayGame is executing...")
+        # Get the message_tracker game instance 
+        self.mtracker = MessageTracker.instance() 
 
         # store input parameters
         print("PlayGame is executing...")  # Debug print
+        self.mtracker.add_message("PlayGame is executing...")
         self.OPPONENTS = opponents
         self.CHIPS = chips
         self.ANTE = ante
@@ -23,7 +23,7 @@ class PlayGame(object):
             self.BettingPhase("postflop")
             self.EvaluationPhase()
         else:
-            message = self.messages.get_messages()
+            message = self.mtracker.get_messages()
             print("*****START OF message*******")
             print(message)
             print("*****END OF message*****")
@@ -45,6 +45,7 @@ class PlayGame(object):
         # check human has chips
         if not self.dealer.chips.players[self.HUMAN]["stack"]:
             print(f"[END] Game over {self.HUMAN}, better luck next time.")
+            self.mtracker.add_message(f"[END] Game over {self.HUMAN}, better luck next time.")
             return False
 
         # kick bots with few chips
@@ -53,10 +54,12 @@ class PlayGame(object):
         # check amount of players remaining
         if len(self.dealer.TrackedPlayers()) < 2:
             print(f"[END] {self.HUMAN} has won!")
+            self.mtracker.add_message(f"[END] {self.HUMAN} has won!")
             return False
 
         # begin new round
         print(f"\n[NEW ROUND]")
+        self.mtracker.add_message(f"\n[NEW ROUND]")
         self.dealer.ShuffleDeck()
         self.dealer.MoveButton()
         self.dealer.TakeAnte()
@@ -114,6 +117,7 @@ class PlayGame(object):
                 if self.dealer.EditHand(name, discards):
                     if name == self.HUMAN and discards:
                         print(f"[CARDS] Your new hand is {self.dealer.cards.players[name]['cards']}")
+                        self.mtracker.add_message(f"[CARDS] Your new hand is {self.dealer.cards.players[name]['cards']}")
                     break
         return True
 
@@ -125,6 +129,7 @@ class PlayGame(object):
     
     def EndGame(self):
         print("[END] Thanks for playing!")
+        self.mtracker.add_message("[END] Thanks for playing!")
 
 #if __name__ == "__main__":
     # This runs if the file is executed directly only
