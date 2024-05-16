@@ -2,9 +2,9 @@ from ..game_logic.dealer import Dealer
 from ..game_logic.message_tracker import MessageTracker
 
 class PlayGame(object):
-    def __init__(self, message_tracker, chips=500, ante=5, opponents=["John Wayne", "Jeff Tabb", "Ted Williams"]):
+    def __init__(self, chips=500, ante=5, opponents=["John Wayne", "Jeff Tabb", "Ted Williams"]):
         # initialise messages
-        self.messages = message_tracker # Get the message_tracker game instance
+        self.messages = MessageTracker.instance() # Get the message_tracker game instance
         self.messages.add_message("PlayGame is executing...")
 
         # store input parameters
@@ -32,7 +32,7 @@ class PlayGame(object):
     def Configuration(self):
         #print("Configuring game...")  # Debug print
         # initialise dealer
-        self.dealer = Dealer(self.messages, len(self.OPPONENTS) + 1)
+        self.dealer = Dealer(len(self.OPPONENTS) + 1)
         # get name and begin tracking human
         #player = input("What's your name?")
         player = "Jeff"

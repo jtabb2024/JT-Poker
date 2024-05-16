@@ -3,13 +3,16 @@ class MessageTracker:
     _instance = None
 
     def __new__(cls, *args, **kwargs):
-        if not cls._instance:
-            cls._instance = super(MessageTracker, cls).__new__(cls, *args, **kwargs)
+        if cls._instance is None:
+            cls._instance = super(MessageTracker, cls).__new__(cls)
+            cls._instance.messages = []  # Initialize messages here to ensure it's done only once
         return cls._instance
 
-    def __init__(self):
-        if not hasattr(self, 'messages'):
-            self.messages = []
+    @classmethod
+    def instance(cls):
+        if cls._instance is None:
+            cls._instance = cls()
+        return cls._instance
 
     def add_message(self, message):
         self.messages.append(message)

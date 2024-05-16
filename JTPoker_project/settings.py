@@ -38,12 +38,10 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'channels',
 
     # my apps
     'JT_poker.apps.JtPokerConfig',
-
-    #3rd Party
-    'channels',
 ]
 
 ASGI_APPLICATION = 'JTPoker_project.asgi.application'
