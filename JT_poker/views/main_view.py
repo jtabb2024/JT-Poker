@@ -5,7 +5,7 @@ from ..game_logic.message_tracker import MessageTracker
 
 def Start_game(request):
     mtracker = MessageTracker.instance() # get the curent instance of Message_Tracker
-    mtracker.add_message("PlayGame is executing...")
+    mtracker.add_message("main_view is executing...")
     game_output = ""
     messages = []
 
@@ -14,11 +14,11 @@ def Start_game(request):
         if 'play' in request.POST:
             game = PlayGame()
             game_output = "Game initialized with human player."
-            mtracker.add_message("PlayGame initialized")
+            mtracker.add_message(game_output)
         elif 'spectate' in request.POST:
             game = SpectateGame()
             game_output = "Spectator game initialized."
-            mtracker.add_message("Spectate game initialized")
+            mtracker.add_message(game_output)
 
         # Retrieve messages from MessageTracker
         messages = mtracker.get_messages()
