@@ -2,13 +2,19 @@ from ..game_logic.dealer import Dealer
 from ..game_logic.message_tracker import MessageTracker
 
 class PlayGame(object):
+
+    instance_count = 0  # Class variable to track the number of instances
+
     def __init__(self, chips=500, ante=5, opponents=["John Wayne", "Jeff Tabb", "Ted Williams"]):
+        # Increment the instance count
+        PlayGame.instance_count += 1
+
         # Get the message_tracker game instance 
         self.mtracker = MessageTracker.instance() 
 
         # store input parameters
         print("PlayGame is executing...")  # Debug print
-        self.mtracker.add_message("PlayGame is executing...")
+        message = f"PlayGame is executing... Instance count: {PlayGame.instance_count}"
         self.OPPONENTS = opponents
         self.CHIPS = chips
         self.ANTE = ante
