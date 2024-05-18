@@ -51,10 +51,17 @@
 
     chatSocket.onmessage = function(e) {
         const data = JSON.parse(e.data);
-        const messages = document.getElementById('messages');
-        messages.innerHTML = '';  // Clear the existing messages
-        displayedMessages = data.messages.slice(-20);  // Keep only the last 20 messages
-        displayMessagesWithDelay(displayedMessages, messages);
+        const messagesContainer = document.getElementById('messages');
+        const newMessages = data.messages.slice(displayedMessages.length); // Get only new messages
+
+        newMessages.forEach(message => {
+            const messageDiv = document.createElement('div');
+            messageDiv.textContent = message;
+            messagesContainer.appendChild(messageDiv);
+            messagesContainer.scrollTop = messagesContainer.scrollHeight;
+        });
+
+        displayedMessages = data.messages; // Update displayed messages to match the latest from the server
     };
 
     chatSocket.onclose = function(e) {
@@ -79,22 +86,21 @@
         }
     }
 
-    function displayMessagesWithDelay(messages, container) {
-        let index = 0;
-
-        function showNextMessage() {
-            if (index < messages.length) {
-                const messageDiv = document.createElement('div');
-                messageDiv.textContent = messages[index];
-                container.appendChild(messageDiv);
-                container.scrollTop = container.scrollHeight;
-                index++;
-                setTimeout(showNextMessage, 2000); // Adjust delay as needed (e.g., 2000ms = 2 seconds)
-            }
-        }
-
-        showNextMessage();
-    }
+    // Remove the delay function as it's not needed anymore
+    // function displayMessagesWithDelay(messages, container) {
+    //     let index = 0;
+    //     function showNextMessage() {
+    //         if (index < messages.length) {
+    //             const messageDiv = document.createElement('div');
+    //             messageDiv.textContent = messages[index];
+    //             container.appendChild(messageDiv);
+    //             container.scrollTop = container.scrollHeight;
+    //             index++;
+    //             setTimeout(showNextMessage, 2000); // Adjust delay as needed (e.g., 2000ms = 2 seconds)
+    //         }
+    //     }
+    //     showNextMessage();
+    // }
 
     setInterval(updateMessages, 5000); // Update every 5 seconds to fetch new messages
 </script>

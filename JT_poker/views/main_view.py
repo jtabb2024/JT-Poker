@@ -6,15 +6,8 @@ from ..game_logic.message_tracker import MessageTracker
 
 def Start_game(request):
     mtracker = MessageTracker.instance()  # get the current instance of Message_Tracker
-    
-    # Initialize the messages list by retrieving it from the MessageTracker instance
-    messages = mtracker.get_messages()
-    
-    # Ensure the MessageTracker is initialized and the message is added once
-    if "Message Tracker Class is now running" not in messages:
-        mtracker.add_message("Message Tracker Class is now running")
-
     game_output = ""
+    messages = []
 
     if request.method == "POST":
         if 'play' in request.POST:
