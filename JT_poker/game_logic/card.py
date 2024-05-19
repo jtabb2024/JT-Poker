@@ -41,6 +41,9 @@ class Card(object):
             suit : card suit
 
         """
+        # Get the running instance of Message_Tracker
+        self.mtracker = MessageTracker.instance()
+
         # assert acceptable parameters 
         try:
             value %= 13
@@ -62,8 +65,9 @@ class Card(object):
         # encode card as string for representation
         self.VALUES = ("2","3","4","5","6","7","8","9","10","J","Q","K","A")
         self.SUITS = "♠♡♢♣"
+        self.IMG_SUITS ="SHDC" 
 
-        self.value_r, self.suit_r = self.VALUES[value], self.SUITS[suit]
+        self.value_r, self.suit_r, self.suit_img_r = self.VALUES[value], self.SUITS[suit], self.IMG_SUITS[suit]
         self.r = self.value_r + self.suit_r
 
         # store input parameters
@@ -71,6 +75,9 @@ class Card(object):
     
     def __repr__(self):
         """Displays the card value and card suit when the card object is printed."""
+        self.mtracker.add_message(f"Card self.r: {self.r}")
+        self.mtracker.add_message(f"Value r: {self.value_r} Suit imgr: {self.suit_img_r}")
+        self.mtracker.add_message(f"{self.value_r}{self.suit_img_r}.png")
         return self.r
 
     def __str__(self):
@@ -79,6 +86,7 @@ class Card(object):
 
     def __int__(self):
         """Converts the card object to an integer that encodes the card value and card suit."""
+        self.mtracker.add_message(f"Card self.b: {self.b}")
         return self.b
 
     def __hash__(self):

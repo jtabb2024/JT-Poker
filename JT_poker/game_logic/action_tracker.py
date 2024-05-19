@@ -82,6 +82,7 @@ class ActionTracker(object):
             self.mtracker.add_message(f"[INFO] Your cards are {info['self']['hand']['cards']}")
             mask = input("Which cards would you like to swap? (00000 for none, 11111 for all)")
             discards =  [info['self']['hand']['cards'][i] for i, v in enumerate(mask) if int(v)]
+            self.mtracker.add_message(f"You discarded {discards}")
         else:
             # get random input from bots
             discards = [info['self']['hand']['cards'][i] for i in range(5) if choice([True,False])]
