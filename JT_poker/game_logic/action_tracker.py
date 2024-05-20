@@ -62,6 +62,7 @@ class ActionTracker(object):
         if name in self.beings["humans"]:
             print(f"[INFO] Your cards are {info['self']['hand']['cards']}")
             self.mtracker.add_message(f"[INFO] Your cards are {info['self']['hand']['cards']}")
+            self.mtracker.add_message(f"[JEFF INFO] Your cards are {info['self']['hand']['cards']}")
             print(f"[INFO] There are {info['game']['pot']} chips in the pot.")
             self.mtracker.add_message(f"[INFO] There are {info['game']['pot']} chips in the pot.")
             print(f"[INFO] You have {info['self']['chips']['stack']} chips remaining.")

@@ -38,6 +38,11 @@ class Dealer(object):
         self.cards.EvaluatePlayersIn()
         print(f"[CARDS] Hands have been dealt.")
         self.mtracker.add_message(f"[CARDS] Hands have been dealt.")
+        for name in names:
+            if name in self.action.beings["humans"]:
+                    hand = self.cards.Hand(name)
+                    self.mtracker.add_message(f"This is the Human TableView player hand: {hand}")
+        #****Need to add the proper way to always get the human players hand***
         # initialise player statuses
         self.action.NewRound(names)
     
@@ -156,6 +161,11 @@ class Dealer(object):
                 info["self"]["chips"] = self.chips.players[name]
                 info["self"]["status"] = self.action.players[name]
                 info["self"]["hand"] = self.cards.players[name]
+                if name in self.action.beings["humans"]:
+                    # Get the 'hand' part of the info dictionary for the viewer
+                    viewer_hand = info["self"].get("hand", [])
+                    # Add the viewer's hand to the message tracker
+                    self.mtracker.add_message(f"This is the Human TableView player hand: {viewer_hand}")
             else:
                 # add info about other players
                 info["others"][name] = {}
