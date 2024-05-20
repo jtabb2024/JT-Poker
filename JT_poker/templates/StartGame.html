@@ -51,17 +51,28 @@
 
     chatSocket.onmessage = function(e) {
         const data = JSON.parse(e.data);
-        const messagesContainer = document.getElementById('messages');
-        const newMessages = data.messages.slice(displayedMessages.length); // Get only new messages
+        if (data.messages) {
+            const messagesContainer = document.getElementById('messages');
+            const newMessages = data.messages.slice(displayedMessages.length); // Get only new messages
 
-        newMessages.forEach(message => {
-            const messageDiv = document.createElement('div');
-            messageDiv.textContent = message;
-            messagesContainer.appendChild(messageDiv);
-            messagesContainer.scrollTop = messagesContainer.scrollHeight;
-        });
+            newMessages.forEach(message => {
+                const messageDiv = document.createElement('div');
+                messageDiv.textContent = message;
+                messagesContainer.appendChild(messageDiv);
+                messagesContainer.scrollTop = messagesContainer.scrollHeight;
+            });
 
-        displayedMessages = data.messages; // Update displayed messages to match the latest from the server
+            displayedMessages = data.messages; // Update displayed messages to match the latest from the server
+        } else if (data.card_data) {
+            for (var i = 0; i < data.card_data.length; i++) {
+                var card = data.card_data[i];
+                // Now you can use this card to display the card
+                // For example, you can append an img tag to a div
+                var img = document.createElement('img');
+                img.src = '/static/images/' + card + '.png';
+                document.getElementById('messages').appendChild(img);
+            }
+        }
     };
 
     chatSocket.onclose = function(e) {

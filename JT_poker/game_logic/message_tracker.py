@@ -30,3 +30,13 @@ class MessageTracker:
 
     def clear_messages(self):
         self.messages.clear()
+        
+    def send_card_data(self, card_data):
+        channel_layer = get_channel_layer()
+        async_to_sync(channel_layer.group_send)(
+            "poker_game",  # This is the name of the group you'll set up in your consumer
+            {
+                "type": "card.data",  # This is the type of the message
+                "card_data": card_data,  # This is the card data
+            },
+        )

@@ -20,5 +20,7 @@ class PokerConsumer(AsyncWebsocketConsumer):
                 'messages': messages
             }))
 
-
+    async def card_data(self, event):
+        card_data = event["card_data"]
+        await self.send_json(card_data)
 
