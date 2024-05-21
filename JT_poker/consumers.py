@@ -1,6 +1,5 @@
 import json
 from channels.generic.websocket import AsyncWebsocketConsumer
-from django.test import RequestFactory
 from .views.main_view import Start_game
 from .game_logic.message_tracker import MessageTracker
 
@@ -19,8 +18,10 @@ class PokerConsumer(AsyncWebsocketConsumer):
             await self.send(text_data=json.dumps({
                 'messages': messages
             }))
-
-    async def card_data(self, event):
-        card_data = event["card_data"]
-        await self.send_json(card_data)
+        elif message['type'] == 'fetch_card_images':
+            mtracker = MessageTracker.instance()  # Get the singleton instance
+            card_images = mtracker.get_card_images()  # This should be the card data
+            await self.send(text_data=json.dumps({
+                'card_images': card_images
+            }))
 

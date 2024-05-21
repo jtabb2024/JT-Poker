@@ -44,7 +44,7 @@ class Dealer(object):
                     handimages = self.hands.HandImages(name)
                     self.mtracker.add_message(f"This is the DealHands Human player hand: {hand}")
                     self.mtracker.add_message(f"This is the DealHands Human player hand image names: {handimages}")
-        #****Need to add the proper way to always get the human players hand***
+                    self.mtracker.add_card_images(f"{handimages}")
         # initialise player statuses
         self.action.NewRound(names)
     

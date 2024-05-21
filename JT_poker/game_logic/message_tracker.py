@@ -12,6 +12,7 @@ class MessageTracker:
     def __init__(self):
         if not self._initialized:
             self.messages = []
+            self.card_images = [] # initialize card images list
             MessageTracker.instance_count += 1
             self.messages.append(f"Message Tracker Class is now running: {MessageTracker.instance_count}")
             self._initialized = True
@@ -31,12 +32,13 @@ class MessageTracker:
     def clear_messages(self):
         self.messages.clear()
         
-    def send_card_data(self, card_data):
-        channel_layer = get_channel_layer()
-        async_to_sync(channel_layer.group_send)(
-            "poker_game",  # This is the name of the group you'll set up in your consumer
-            {
-                "type": "card.data",  # This is the type of the message
-                "card_data": card_data,  # This is the card data
-            },
-        )
+    def add_card_images(self, images):  # add card images
+        self.card_images.append(images)
+
+    def get_card_images(self):
+        card_images = self.card_images
+        self.card_images = []  # Clear the card images after they are fetched
+        return card_images
+
+    def clear_card_images(self):  # clear card images
+        self.card_images.clear()
