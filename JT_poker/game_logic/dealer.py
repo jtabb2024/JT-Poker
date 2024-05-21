@@ -41,7 +41,9 @@ class Dealer(object):
         for name in names:
             if name in self.action.beings["humans"]:
                     hand = self.hands.Hand(name)
-                    self.mtracker.add_message(f"This is the Human TableView player hand: {hand}")
+                    handimages = self.hands.HandImages(name)
+                    self.mtracker.add_message(f"This is the DealHands Human player hand: {hand}")
+                    self.mtracker.add_message(f"This is the DealHands Human player hand image names: {handimages}")
         #****Need to add the proper way to always get the human players hand***
         # initialise player statuses
         self.action.NewRound(names)

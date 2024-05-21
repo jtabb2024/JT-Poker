@@ -92,7 +92,7 @@ class HandTracker(object):
             if name in self.players:
                 raise Exception(f"{name} is already being tracked.")
         # begin tracking players
-        self.players.update({name : {"cards" : []} for name in names})
+        self.players.update({name : {"cards" : [], "card_images": []} for name in names})
 
     def UntrackPlayers(self, names : list[str]):
         """
@@ -467,5 +467,17 @@ class HandTracker(object):
         # assert player is being tracked and return hand
         try:
             return self.players[name]["cards"]
+        except KeyError:
+            raise KeyError(f"{name} is not being tracked.")
+        
+    def HandImages(self, name : str) -> list[str]:
+        """
+        Provides the hand images (image names of each card) of a player being tracked.
+    
+        """
+        # assert player is being tracked and return hand images
+        try:
+            imagehand = self.Hand(name)
+            return [card.get_CardImages() for card in imagehand]
         except KeyError:
             raise KeyError(f"{name} is not being tracked.")
