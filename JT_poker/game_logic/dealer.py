@@ -11,7 +11,7 @@ from .message_tracker import MessageTracker
 class Dealer(object):
     def __init__(self, num_seats=6):
         # initialise trackers
-        self.cards = HandTracker()
+        self.hands = HandTracker()
         self.seats = SeatTracker(num_seats)
         self.chips = ChipTracker()
         self.action = ActionTracker()
@@ -25,37 +25,37 @@ class Dealer(object):
         self.mtracker.add_message(f"[BUTTON] The button was given to {player}.")
 
     def ShuffleDeck(self):
-        self.cards.ShuffleDeck()
+        self.hands.ShuffleDeck()
         print(f"[CARDS] The deck has been shuffled.")
         self.mtracker.add_message(f"[CARDS] The deck has been shuffled.")
         
     def DealHands(self):
         # determine players in the round and begin tracking
         names = self.seats.players
-        self.cards.TrackPlayers(names)
+        self.hands.TrackPlayers(names)
         # deal and evaluate hands and log
-        self.cards.DealPlayersIn()
-        self.cards.EvaluatePlayersIn()
-        print(f"[CARDS] Hands have been dealt.")
-        self.mtracker.add_message(f"[CARDS] Hands have been dealt.")
+        self.hands.DealPlayersIn()
+        self.hands.EvaluatePlayersIn()
+        print(f"[HANDS] Hands have been dealt.")
+        self.mtracker.add_message(f"[HANDS] Hands have been dealt.")
         for name in names:
             if name in self.action.beings["humans"]:
-                    hand = self.cards.Hand(name)
+                    hand = self.hands.Hand(name)
                     self.mtracker.add_message(f"This is the Human TableView player hand: {hand}")
         #****Need to add the proper way to always get the human players hand***
         # initialise player statuses
         self.action.NewRound(names)
     
     def EditHand(self, name, discards):
-        hand = self.cards.Hand(name)
+        hand = self.hands.Hand(name)
         # act on discard request and return success or not
-        if self.cards.AllowDiscards(hand, discards):
-            self.cards.SwapPlayersCards(name, discards)
-            self.cards.EvaluatePlayersIn()
+        if self.hands.AllowDiscards(hand, discards):
+            self.hands.SwapPlayersCards(name, discards)
+            self.hands.EvaluatePlayersIn()
             # log approved request
             if discards:
-                print(f"[CARDS] {name} swapped {len(discards)} cards.")
-                self.mtracker.add_message(f"[CARDS] {name} swapped {len(discards)} cards.")
+                print(f"[HANDS] {name} swapped {len(discards)} cards.")
+                self.mtracker.add_message(f"[HANDS] {name} swapped {len(discards)} cards.")
             else:
                 print(f"[CARDS] {name} didn't swap any cards.")
                 self.mtracker.add_message(f"[CARDS] {name} didn't swap any cards.")
@@ -64,7 +64,7 @@ class Dealer(object):
         
     def CollectCards(self):
         # collect all cards and log
-        self.cards.CollectCards()
+        self.hands.CollectCards()
         print(f"[CARDS] Cards have been collected.")
         self.mtracker.add_message(f"[CARDS] Cards have been collected.")
         
@@ -138,15 +138,15 @@ class Dealer(object):
             info[name] = {}
             info[name]["seat"] = self.seats.players[name]
             info[name]["chips"] = self.chips.players[name]
-            if name in self.cards.players:
-                info[name]["hand"] = self.cards.players[name]
+            if name in self.hands.players:
+                info[name]["hand"] = self.hands.players[name]
             if name in self.action.players:
-                info[name]["status"] = self.action.players[name]
+                info[name]["status"] = self.hands.players[name]
         # log missing info
         if not self.action.players:
             print(f"[WARNING] Nobody has a status.")
             self.mtracker.add_message(f"[WARNING] Nobody has a status.")
-        if not self.cards.players:
+        if not self.hands.players:
             print(f"[WARNING] Nobody has a hand.")
             self.mtracker.add_message(f"[WARNING] Nobody has a hand.")
         return info
@@ -160,7 +160,7 @@ class Dealer(object):
                 info["self"]["seat"] = self.seats.players[name]
                 info["self"]["chips"] = self.chips.players[name]
                 info["self"]["status"] = self.action.players[name]
-                info["self"]["hand"] = self.cards.players[name]
+                info["self"]["hand"] = self.hands.players[name]
                 if name in self.action.beings["humans"]:
                     # Get the 'hand' part of the info dictionary for the viewer
                     viewer_hand = info["self"].get("hand", [])
@@ -222,11 +222,11 @@ class Dealer(object):
         mucks = set([])
         i, rank_n = 0, inf
         for name in showdown:
-            if self.cards.players[name]["rank_n"] <= rank_n:
-                hand = self.cards.Hand(name)
+            if self.hands.players[name]["rank_n"] <= rank_n:
+                hand = self.hands.Hand(name)
                 print(f"[SHOWDOWN] {name} is holding {hand}")
                 self.mtracker.add_message(f"[SHOWDOWN] {name} is holding {hand}")
-                rank_n = self.cards.players[name]["rank_n"]
+                rank_n = self.hands.players[name]["rank_n"]
             else:
                 print(f"[SHOWDOWN] {name} mucked.")
                 self.mtracker.add_message(f"[SHOWDOWN] {name} mucked.")
@@ -236,7 +236,7 @@ class Dealer(object):
             if name in rewards:
                 reward = rewards[name]
                 if name not in mucks:
-                    hand = self.cards.players[name]["rank_c"]
+                    hand = self.hands.players[name]["rank_c"]
                     print(f"[REWARDS] {name} won {reward} with a {hand}")
                     self.mtracker.add_message(f"[REWARDS] {name} won {reward} with a {hand}")
                 else:
