@@ -152,7 +152,6 @@ class Dealer(object):
         return info
 
     def TableView(self, viewer):
-        # initialise info tracker and return it
         info = {"self" : {}, "others" : {}, "game" : {}}
         for name in self.seats.players:
             # add info about viewer
