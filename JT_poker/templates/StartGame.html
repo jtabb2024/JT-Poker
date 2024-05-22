@@ -26,6 +26,13 @@
             width: 100px;
             height: auto;
         }
+        .card {
+            position: relative;
+            cursor: pointer;
+        }
+        .card.selected {
+            transform: translateY(-10px);
+        }
     </style>
 </head>
 <body>
@@ -86,17 +93,41 @@
     
                 console.log("data.card_images:", data.card_images); // Debug: Log the raw data
     
-                cardImagesArray.forEach(card => {
+                cardImagesArray.forEach((card, index) => {
+                    var cardDiv = document.createElement('div');
+                    cardDiv.className = 'card';
+                    cardDiv.dataset.selected = '0';
+                    cardDiv.dataset.order = index;
+                    cardDiv.draggable = true;
+            
                     var img = document.createElement('img');
-                    img.src = staticUrl + card.trim(); // Correct the image path
-                    console.log("Card image path: " + img.src); // Debug: Log image path
-                    img.onload = function() {
-                        console.log("Image loaded successfully: " + img.src); // Debug: Image loaded
-                    }
-                    img.onerror = function() {
-                        console.error("Failed to load image: " + img.src); // Debug: Image failed to load
-                    }
-                    cardsContainer.appendChild(img);
+                    img.src = staticUrl + card.trim();
+                    cardDiv.appendChild(img);
+            
+                    cardDiv.addEventListener('click', function() {
+                        this.classList.toggle('selected');
+                        this.dataset.selected = this.classList.contains('selected') ? '1' : '0';
+                        console.log(generateDiscardString()); // Debug: Log the discard string
+                    });
+            
+                    cardDiv.addEventListener('dragstart', function(event) {
+                        event.dataTransfer.setData('text/plain', this.dataset.order);
+                    });
+            
+                    cardsContainer.addEventListener('dragover', function(event) {
+                        event.preventDefault();
+                    });
+            
+                    cardsContainer.addEventListener('drop', function(event) {
+                        event.preventDefault();
+                        const sourceOrder = event.dataTransfer.getData('text/plain');
+                        const targetOrder = event.target.closest('.card').dataset.order;
+                        const sourceCard = document.querySelector(`.card[data-order="${sourceOrder}"]`);
+                        const targetCard = document.querySelector(`.card[data-order="${targetOrder}"]`);
+                        this.insertBefore(sourceCard, targetOrder > sourceOrder ? targetCard.nextSibling : targetCard);
+                    });
+            
+                    cardsContainer.appendChild(cardDiv);
                 });
     
                 displayedCardImages = cardImagesArray;
@@ -107,6 +138,15 @@
     chatSocket.onclose = function(e) {
         console.error('Chat socket closed unexpectedly');
     };
+
+    function generateDiscardString() {
+        let discardString = '';
+        const cards = document.querySelectorAll('.card');
+        cards.forEach(card => {
+            discardString += card.dataset.selected;
+        });
+        return discardString;
+    }
 
     function startGame() {
         const playButton = document.querySelector('button[name="play"]');
