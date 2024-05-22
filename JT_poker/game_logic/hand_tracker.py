@@ -470,14 +470,21 @@ class HandTracker(object):
         except KeyError:
             raise KeyError(f"{name} is not being tracked.")
         
-    def HandImages(self, name : str) -> list[str]:
+    def HandImages(self, name: str) -> list[str]:
         """
         Provides the hand images (image names of each card) of a player being tracked.
-    
         """
-        # assert player is being tracked and return hand images
         try:
             imagehand = self.Hand(name)
-            return [card.get_CardImages() for card in imagehand]
+            print('************Image Hand:', imagehand)  # Log the hand
+            card_images = [card.get_CardImages() for card in imagehand]  # This should already be flat
+            print('************Hand images before flattening:', card_images)  # Log the images being returned
+            
+            # Flatten the list if it is nested
+            if card_images and isinstance(card_images[0], list):
+                card_images = [img for sublist in card_images for img in sublist]
+            
+            print('************Hand images after flattening:', card_images)  # Log the images being returned
+            return card_images
         except KeyError:
             raise KeyError(f"{name} is not being tracked.")

@@ -34,7 +34,7 @@ class MessageTracker:
         
     def add_card_images(self, images):  # add card images
         print('************Adding card images:', images)  # Log the images being added
-        self.card_images.append(images)
+        self.card_images.extend(images)
 
     def get_card_images(self):
         card_images = self.card_images

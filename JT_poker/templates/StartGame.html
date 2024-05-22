@@ -4,11 +4,27 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Welcome to the Game</title>
-    <!-- Bootstrap CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KyZXEAg3QhqLMpG8r+Knujsl7/2D2e92ZB3fCtvJd2Dt+koWvEcX77pq6iX7z0gO" crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
     <style>
-        #messages div, #cards img {
-            font-size: 1.5rem; /* Larger font size for messages */
+        #messages {
+            background-color: #f8f9fa;
+            border: 1px solid #dee2e6;
+            padding: 15px;
+            height: 300px;
+            overflow-y: scroll;
+        }
+        #cards {
+            background-color: #ffffff;
+            border: 1px solid #dee2e6;
+            padding: 15px;
+            height: 300px;
+            overflow-y: scroll;
+            display: flex;
+            gap: 10px; /* Space between cards */
+        }
+        #cards img {
+            width: 100px;
+            height: auto;
         }
     </style>
 </head>
@@ -17,20 +33,16 @@
     <h1>Welcome to the Game</h1>
     <div class="row">
         <div class="col-md-6">
-            <div id="messages" class="border rounded p-3 mb-3" style="height: 300px; overflow-y: scroll;">
+            <div id="messages">
                 <!-- Messages will be appended here dynamically -->
-                {% for message in messages %}
-                    <div><p>{{ message }}</p></div>
-                {% endfor %}
             </div>
         </div>
         <div class="col-md-6">
-            <div id="cards" class="border rounded p-3 mb-3" style="height: 300px; overflow-y: scroll;">
+            <div id="cards">
                 <!-- Card images will be appended here dynamically -->
             </div>
         </div>
     </div>
-    <p>{{ game_output }}</p>
     <p id="ws-url"></p> <!-- Display the WebSocket URL on the page -->
     <form id="game-form" method="post" action="{% url 'start_game' %}">
         {% csrf_token %}
@@ -39,30 +51,22 @@
     </form>
 </div>
 
-<!-- Bootstrap Bundle with Popper -->
+{% load static %}
+<script>
+    var staticUrl = "{% static 'images/cards/Deck1/' %}";
+</script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
 <script>
-    // Construct the WebSocket URL
     const wsUrl = 'ws://' + window.location.host + '/ws/playPoker/';
-
-    // Log the WebSocket URL to the console
-    console.log('WebSocket URL:', wsUrl);
-
-    // Ensure the element exists before setting its content
-    const wsUrlElement = document.getElementById('ws-url');
-    if (wsUrlElement) {
-        wsUrlElement.textContent = 'WebSocket URL: ' + wsUrl;
-    }
-
-    // Create the WebSocket connection
     const chatSocket = new WebSocket(wsUrl);
     let displayedMessages = [];
+    let displayedCardImages = [];
 
     chatSocket.onmessage = function(e) {
         const data = JSON.parse(e.data);
         if (data.messages) {
             const messagesContainer = document.getElementById('messages');
-            const newMessages = data.messages.slice(displayedMessages.length); // Get only new messages
+            const newMessages = data.messages.slice(displayedMessages.length);
 
             newMessages.forEach(message => {
                 const messageDiv = document.createElement('div');
@@ -71,18 +75,35 @@
                 messagesContainer.scrollTop = messagesContainer.scrollHeight;
             });
 
-            displayedMessages = data.messages; // Update displayed messages to match the latest from the server
+            displayedMessages = data.messages;
         } else if (data.card_images) {
             const cardsContainer = document.getElementById('cards');
-            cardsContainer.innerHTML = ''; // Clear the cards container before appending new card images
-            data.card_images.forEach(card => {
-                var img = document.createElement('img');
-                img.src = '/static/images/' + card + '.png';
-                cardsContainer.appendChild(img);
-            });
+            const cardImagesArray = data.card_images; // This should be a flat list of image names
+    
+            // If cardImagesArray is not empty, clear the cards container and append new card images
+            if (cardImagesArray.length > 0) {
+                cardsContainer.innerHTML = ''; // Clear the cards container before appending new card images
+    
+                console.log("data.card_images:", data.card_images); // Debug: Log the raw data
+    
+                cardImagesArray.forEach(card => {
+                    var img = document.createElement('img');
+                    img.src = staticUrl + card.trim(); // Correct the image path
+                    console.log("Card image path: " + img.src); // Debug: Log image path
+                    img.onload = function() {
+                        console.log("Image loaded successfully: " + img.src); // Debug: Image loaded
+                    }
+                    img.onerror = function() {
+                        console.error("Failed to load image: " + img.src); // Debug: Image failed to load
+                    }
+                    cardsContainer.appendChild(img);
+                });
+    
+                displayedCardImages = cardImagesArray;
+            }
         }
     };
-
+    
     chatSocket.onclose = function(e) {
         console.error('Chat socket closed unexpectedly');
     };
@@ -113,7 +134,10 @@
         }
     }
 
-    setInterval(updateMessages, 5000); // Update every 5 seconds to fetch new messages
+    setInterval(() => {
+        updateMessages();
+        updateCardImages();
+    }, 5000);
 </script>
 </body>
 </html>

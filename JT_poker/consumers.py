@@ -12,7 +12,8 @@ class PokerConsumer(AsyncWebsocketConsumer):
 
     async def receive(self, text_data):
         message = json.loads(text_data)
-        print(f"Received message type: {message['type']}")  # Print the message type
+        print(f"Received message type: {message['type']}")  # Print the message 
+        
         if message['type'] == 'fetch_messages':
             mtracker = MessageTracker.instance()  # Get the singleton instance
             messages = mtracker.get_messages()
