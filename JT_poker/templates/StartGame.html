@@ -74,6 +74,7 @@
             displayedMessages = data.messages; // Update displayed messages to match the latest from the server
         } else if (data.card_images) {
             const cardsContainer = document.getElementById('cards');
+            cardsContainer.innerHTML = ''; // Clear the cards container before appending new card images
             data.card_images.forEach(card => {
                 var img = document.createElement('img');
                 img.src = '/static/images/' + card + '.png';
@@ -113,7 +114,6 @@
     }
 
     setInterval(updateMessages, 5000); // Update every 5 seconds to fetch new messages
-    setInterval(updateCardImages, 5000); // Update every 5 seconds to fetch new card images
 </script>
 </body>
 </html>

@@ -33,11 +33,13 @@ class MessageTracker:
         self.messages.clear()
         
     def add_card_images(self, images):  # add card images
+        print('************Adding card images:', images)  # Log the images being added
         self.card_images.append(images)
 
     def get_card_images(self):
         card_images = self.card_images
         self.card_images = []  # Clear the card images after they are fetched
+        print('************Getting card images:', card_images)  # Log the images being returned
         return card_images
 
     def clear_card_images(self):  # clear card images
