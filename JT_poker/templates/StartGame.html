@@ -71,70 +71,59 @@
 
     chatSocket.onmessage = function(e) {
         const data = JSON.parse(e.data);
-        if (data.messages) {
+        if (data.type === 'update_messages') {
             const messagesContainer = document.getElementById('messages');
-            const newMessages = data.messages.slice(displayedMessages.length);
-
-            newMessages.forEach(message => {
+            messagesContainer.innerHTML = ''; // Clear previous messages
+            data.messages.forEach(message => {
                 const messageDiv = document.createElement('div');
                 messageDiv.textContent = message;
                 messagesContainer.appendChild(messageDiv);
                 messagesContainer.scrollTop = messagesContainer.scrollHeight;
             });
-
             displayedMessages = data.messages;
-        } else if (data.card_images) {
+        } else if (data.type === 'update_card_images') {
             const cardsContainer = document.getElementById('cards');
-            const cardImagesArray = data.card_images; // This should be a flat list of image names
-    
-            // If cardImagesArray is not empty, clear the cards container and append new card images
-            if (cardImagesArray.length > 0) {
-                cardsContainer.innerHTML = ''; // Clear the cards container before appending new card images
-    
-                console.log("data.card_images:", data.card_images); // Debug: Log the raw data
-    
-                cardImagesArray.forEach((card, index) => {
-                    var cardDiv = document.createElement('div');
-                    cardDiv.className = 'card';
-                    cardDiv.dataset.selected = '0';
-                    cardDiv.dataset.order = index;
-                    cardDiv.draggable = true;
-            
-                    var img = document.createElement('img');
-                    img.src = staticUrl + card.trim();
-                    cardDiv.appendChild(img);
-            
-                    cardDiv.addEventListener('click', function() {
-                        this.classList.toggle('selected');
-                        this.dataset.selected = this.classList.contains('selected') ? '1' : '0';
-                        console.log(generateDiscardString()); // Debug: Log the discard string
-                    });
-            
-                    cardDiv.addEventListener('dragstart', function(event) {
-                        event.dataTransfer.setData('text/plain', this.dataset.order);
-                    });
-            
-                    cardsContainer.addEventListener('dragover', function(event) {
-                        event.preventDefault();
-                    });
-            
-                    cardsContainer.addEventListener('drop', function(event) {
-                        event.preventDefault();
-                        const sourceOrder = event.dataTransfer.getData('text/plain');
-                        const targetOrder = event.target.closest('.card').dataset.order;
-                        const sourceCard = document.querySelector(`.card[data-order="${sourceOrder}"]`);
-                        const targetCard = document.querySelector(`.card[data-order="${targetOrder}"]`);
-                        this.insertBefore(sourceCard, targetOrder > sourceOrder ? targetCard.nextSibling : targetCard);
-                    });
-            
-                    cardsContainer.appendChild(cardDiv);
+            cardsContainer.innerHTML = ''; // Clear previous card images
+            data.card_images.forEach((card, index) => {
+                var cardDiv = document.createElement('div');
+                cardDiv.className = 'card';
+                cardDiv.dataset.selected = '0';
+                cardDiv.dataset.order = index;
+                cardDiv.draggable = true;
+        
+                var img = document.createElement('img');
+                img.src = staticUrl + card.trim();
+                cardDiv.appendChild(img);
+        
+                cardDiv.addEventListener('click', function() {
+                    this.classList.toggle('selected');
+                    this.dataset.selected = this.classList.contains('selected') ? '1' : '0';
+                    console.log(generateDiscardString()); // Debug: Log the discard string
                 });
-    
-                displayedCardImages = cardImagesArray;
-            }
+        
+                cardDiv.addEventListener('dragstart', function(event) {
+                    event.dataTransfer.setData('text/plain', this.dataset.order);
+                });
+        
+                cardsContainer.addEventListener('dragover', function(event) {
+                    event.preventDefault();
+                });
+        
+                cardsContainer.addEventListener('drop', function(event) {
+                    event.preventDefault();
+                    const sourceOrder = event.dataTransfer.getData('text/plain');
+                    const targetOrder = event.target.closest('.card').dataset.order;
+                    const sourceCard = document.querySelector(`.card[data-order="${sourceOrder}"]`);
+                    const targetCard = document.querySelector(`.card[data-order="${targetOrder}"]`);
+                    this.insertBefore(sourceCard, targetOrder > sourceOrder ? targetCard.nextSibling : targetCard);
+                });
+        
+                cardsContainer.appendChild(cardDiv);
+            });
+            displayedCardImages = data.card_images;
         }
     };
-    
+
     chatSocket.onclose = function(e) {
         console.error('Chat socket closed unexpectedly');
     };
@@ -157,27 +146,7 @@
         const spectateButton = document.querySelector('button[name="spectate"]');
         spectateButton.click();
     }
-
-    function updateMessages() {
-        if (chatSocket.readyState === WebSocket.OPEN) {
-            chatSocket.send(JSON.stringify({
-                'type': 'fetch_messages'
-            }));
-        }
-    }
-
-    function updateCardImages() {
-        if (chatSocket.readyState === WebSocket.OPEN) {
-            chatSocket.send(JSON.stringify({
-                'type': 'fetch_card_images'
-            }));
-        }
-    }
-
-    setInterval(() => {
-        updateMessages();
-        updateCardImages();
-    }, 5000);
 </script>
 </body>
 </html>
+
