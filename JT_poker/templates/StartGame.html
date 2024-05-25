@@ -85,10 +85,10 @@
             <div>
                 <!-- Messages will be appended here dynamically -->
             </div>
-            <form id="game-form" method="post" action="{% url 'start_game' %}">
+            <form id="game-form" method="post" action="#">
                 {% csrf_token %}
-                <button type="submit" name="play" class="btn btn-primary">Play</button>
-                <button type="submit" name="spectate" class="btn btn-secondary">Spectate</button>
+                <button id="play_btn" type="button" class="btn btn-primary">Play</button>
+                <button id="spectate_btn" type="button" class="btn btn-secondary">Spectate</button>
             </form>
         </div>
         <div id="cards">
@@ -106,6 +106,19 @@
     const chatSocket = new WebSocket(wsUrl);
     let displayedMessages = [];
     let displayedCardImages = [];
+
+    const gameForm = document.querySelector("#game-form");
+    gameForm.addEventListener('submit', e => e.preventDefault());
+
+    document.querySelector('#play_btn').addEventListener('click', async () => {
+        let body = new FormData(gameForm);
+        body.append("play", "play");
+
+        await fetch("{% url 'start_game' %}", {
+            method: "POST",
+            body
+        });
+    });
 
     chatSocket.onmessage = function(e) {
         const data = JSON.parse(e.data);
