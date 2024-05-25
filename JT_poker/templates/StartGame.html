@@ -14,17 +14,19 @@
             overflow: hidden; /* Prevent scrolling */
         }
         #game-form {
-            position: sticky;
-            bottom: 0;
             background-color: #f8f9fa;
             padding: 15px;
-            border-top: 1px solid #dee2e6;
+            display: flex;
+            justify-content: space-around;
         }
         #header {
             background-color: #f8f9fa;
             border-bottom: 1px solid #dee2e6;
             padding: 15px;
             width: 100%;
+        }
+        #header h1 {
+            margin: 0;
         }
         #main {
             display: flex;
@@ -40,7 +42,7 @@
             display: flex;
             flex-direction: column;
             justify-content: space-between;
-            height: 50%; /* Half the screen */
+            height: 30%; /* Half the screen */
             max-height: 100vh; /* Limit height */
         }
         #cards {
@@ -51,6 +53,8 @@
             display: flex;
             flex-wrap: wrap;
             gap: 10px; /* Space between cards */
+            height: calc(100vh - 80px - 15px - 10%); /* Adjust for header, padding, and bottom bar */
+            width: 80%;
         }
         #cards img {
             width: 100px;
@@ -184,6 +188,13 @@
     function spectateGame() {
         const spectateButton = document.querySelector('button[name="spectate"]');
         spectateButton.click();
+    }
+
+    function disableButtons() {
+        const playButton = document.querySelector('button[name="play"]');
+        const spectateButton = document.querySelector('button[name="spectate"]');
+        playButton.disabled = true;
+        spectateButton.disabled = true;
     }
 </script>
 </body>
