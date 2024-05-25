@@ -79,9 +79,9 @@ class Card(object):
     
     def __repr__(self):
         """Displays the card value and card suit when the card object is printed."""
-        self.mtracker.add_message(f"Card self.r: {self.r}")
-        self.mtracker.add_message(f"Value_i, Suit_i: {self.value_i},{self.suit_i}")
-        self.mtracker.add_message(self.get_CardImages())
+        #self.mtracker.add_message(f"Card self.r: {self.r}")
+        #self.mtracker.add_message(f"Value_i, Suit_i: {self.value_i},{self.suit_i}")
+        # self.mtracker.add_message(self.get_CardImages())
         return self.r
 
     def __str__(self):
@@ -90,7 +90,7 @@ class Card(object):
 
     def __int__(self):
         """Converts the card object to an integer that encodes the card value and card suit."""
-        self.mtracker.add_message(f"Card self.b: {self.b}")
+        #self.mtracker.add_message(f"Card self.b: {self.b}")
         return self.b
 
     def __hash__(self):

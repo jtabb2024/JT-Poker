@@ -13,7 +13,6 @@ class PlayGame(object):
         self.mtracker = MessageTracker.instance() 
 
         # store input parameters
-        print("PlayGame is executing...")  # Debug print
         self.mtracker.add_message(f"PlayGame is executing... Instance count: {PlayGame.instance_count}")
         self.OPPONENTS = opponents
         self.CHIPS = chips

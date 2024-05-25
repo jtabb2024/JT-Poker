@@ -16,7 +16,7 @@ class MessageTracker:
             self.messages = []
             self.card_images = []  # initialize card images list
             MessageTracker.instance_count += 1
-            self.messages.append(f"Message Tracker Class is now running: {MessageTracker.instance_count}")
+            # self.messages.append(f"Message Tracker Class is now running: {MessageTracker.instance_count}")
             self._initialized = True
 
     @classmethod
