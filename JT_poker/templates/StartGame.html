@@ -56,27 +56,33 @@
             height: calc(100vh - 80px - 15px - 10%); /* Adjust for header, padding, and bottom bar */
             width: 80%;
         }
-        #cards img {
-            width: 100px;
-            height: auto;
-        }
         .card {
             position: relative;
             cursor: pointer;
             background: none; /* Remove white box */
             display: inline-block;
             text-decoration: none; /* Remove lines under images */
+            padding: 0; /* Remove default padding */
+            border: none; /* Remove default border */
             width: 100px; /* Match the width of the image */
             height: auto; /* Make the div only as tall as the image */
         }
         .card.selected {
             transform: translateY(-10px);
         }
-        .card a {
-            display: inline-block;
+        .card button {
+            display: block;
+            padding: 0;
+            border: none;
+            background: none;
             width: 100px;
             height: auto;
-            text-decoration: none;
+            cursor: pointer;
+        }
+        .card img {
+            width: 100px;
+            height: auto;
+            display: block;
         }
     </style>
 </head>
@@ -133,25 +139,27 @@
                 cardDiv.dataset.selected = '0';
                 cardDiv.dataset.order = index;
                 cardDiv.draggable = true;
-        
+
+                var button = document.createElement('button');
                 var img = document.createElement('img');
                 img.src = staticUrl + card.trim();
-                cardDiv.appendChild(img);
-        
-                cardDiv.addEventListener('click', function() {
-                    this.classList.toggle('selected');
-                    this.dataset.selected = this.classList.contains('selected') ? '1' : '0';
+                button.appendChild(img);
+                cardDiv.appendChild(button);
+
+                button.addEventListener('click', function() {
+                    cardDiv.classList.toggle('selected');
+                    cardDiv.dataset.selected = cardDiv.classList.contains('selected') ? '1' : '0';
                     console.log(generateDiscardString()); // Debug: Log the discard string
                 });
-        
-                cardDiv.addEventListener('dragstart', function(event) {
-                    event.dataTransfer.setData('text/plain', this.dataset.order);
+
+                img.addEventListener('dragstart', function(event) {
+                    event.dataTransfer.setData('text/plain', cardDiv.dataset.order);
                 });
-        
+
                 cardsContainer.addEventListener('dragover', function(event) {
                     event.preventDefault();
                 });
-        
+
                 cardsContainer.addEventListener('drop', function(event) {
                     event.preventDefault();
                     const sourceOrder = event.dataTransfer.getData('text/plain');
@@ -160,7 +168,7 @@
                     const targetCard = document.querySelector(`.card[data-order="${targetOrder}"]`);
                     this.insertBefore(sourceCard, targetOrder > sourceOrder ? targetCard.nextSibling : targetCard);
                 });
-        
+
                 cardsContainer.appendChild(cardDiv);
             });
             displayedCardImages = data.card_images;
@@ -199,4 +207,3 @@
 </script>
 </body>
 </html>
-
