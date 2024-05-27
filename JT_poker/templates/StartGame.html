@@ -98,7 +98,6 @@
             <form id="game-form" method="post" action="{% url 'start_game' %}">
                 {% csrf_token %}
                 <button type="submit" name="play" class="btn btn-primary">Play</button>
-                <button type="submit" name="spectate" class="btn btn-secondary">Spectate</button>
             </form>
         </div>
         <div id="cards">
@@ -193,16 +192,9 @@
         playButton.click();
     }
 
-    function spectateGame() {
-        const spectateButton = document.querySelector('button[name="spectate"]');
-        spectateButton.click();
-    }
-
     function disableButtons() {
         const playButton = document.querySelector('button[name="play"]');
-        const spectateButton = document.querySelector('button[name="spectate"]');
         playButton.disabled = true;
-        spectateButton.disabled = true;
     }
 </script>
 </body>
