@@ -6,7 +6,6 @@ class PlayGame(object):
     instance_count = 0  # Class variable to track the number of instances
 
     def __init__(self, chips=500, ante=5, opponents=["John Wayne", "Jeff Tabb", "Ted Williams"]):
-        # Increment the instance count
         PlayGame.instance_count += 1
 
         # Get the message_tracker game instance 
@@ -20,7 +19,7 @@ class PlayGame(object):
         
         # initialise game
         self.Configuration()
-
+        
         # gameloop
         while self.NewHand():
             self.BettingPhase("preflop")
