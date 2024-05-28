@@ -134,11 +134,11 @@
                 cardDiv.className = 'card';
                 cardDiv.dataset.selected = '0';
                 cardDiv.dataset.order = index;
-                cardDiv.draggable = true;
 
                 var button = document.createElement('button');
                 var img = document.createElement('img');
                 img.src = staticUrl + card.trim();
+                img.draggable = true;
                 button.appendChild(img);
                 cardDiv.appendChild(button);
 
@@ -156,13 +156,22 @@
                     event.preventDefault();
                 });
 
-                cardsContainer.addEventListener('drop', function(event) {
+                cardDiv.addEventListener('drop', function(event) {
                     event.preventDefault();
                     const sourceOrder = event.dataTransfer.getData('text/plain');
-                    const targetOrder = event.target.closest('.card').dataset.order;
+                    const targetOrder = this.dataset.order;
                     const sourceCard = document.querySelector(`.card[data-order="${sourceOrder}"]`);
                     const targetCard = document.querySelector(`.card[data-order="${targetOrder}"]`);
-                    this.insertBefore(sourceCard, targetOrder > sourceOrder ? targetCard.nextSibling : targetCard);
+            
+                    if (sourceCard !== targetCard) {
+                        if (sourceOrder < targetOrder) {
+                            // If the source card is to the left of the target card, insert it to the right of the target card
+                            cardsContainer.insertBefore(sourceCard, targetCard.nextSibling);
+                        } else {
+                            // If the source card is to the right of the target card, insert it to the left of the target card
+                            cardsContainer.insertBefore(sourceCard, targetCard);
+                        }
+                    }
                 });
 
                 cardsContainer.appendChild(cardDiv);
