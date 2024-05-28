@@ -95,10 +95,7 @@
             <div>
                 <!-- Messages will be appended here dynamically -->
             </div>
-            <form id="game-form" method="post" action="{% url 'start_game' %}">
-                {% csrf_token %}
-                <button type="submit" name="play" class="btn btn-primary">Play</button>
-            </form>
+            <button id="play-button" class="btn btn-primary">Play</button>
         </div>
         <div id="cards">
             <!-- Card images will be appended here dynamically -->
@@ -171,6 +168,8 @@
                 cardsContainer.appendChild(cardDiv);
             });
             displayedCardImages = data.card_images;
+        } else if (data.type === 'game_started') {
+            alert(data.message);
         }
     };
 
@@ -187,10 +186,11 @@
         return discardString;
     }
 
-    function startGame() {
-        const playButton = document.querySelector('button[name="play"]');
-        playButton.click();
-    }
+    document.getElementById('play-button').addEventListener('click', function() {
+        chatSocket.send(JSON.stringify({
+            'type': 'start_game'
+        }));
+    });
 
     function disableButtons() {
         const playButton = document.querySelector('button[name="play"]');

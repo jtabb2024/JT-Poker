@@ -1,7 +1,8 @@
 import json
+import asyncio
 from channels.generic.websocket import AsyncWebsocketConsumer
-from asgiref.sync import async_to_sync
-from .views.main_view import start_game
+from asgiref.sync import async_to_sync, sync_to_async
+from .views.play_game import PlayGame
 from .game_logic.message_tracker import MessageTracker
 
 class PokerConsumer(AsyncWebsocketConsumer):
@@ -38,6 +39,9 @@ class PokerConsumer(AsyncWebsocketConsumer):
                 'type': 'update_card_images',
                 'card_images': card_images
             }))
+        elif message['type'] == 'start_game':
+            print("asyncio create task")
+            asyncio.create_task(self.start_game())
 
     async def update_messages(self, event):
         messages = event['messages']
@@ -52,4 +56,9 @@ class PokerConsumer(AsyncWebsocketConsumer):
             'type': 'update_card_images',
             'card_images': card_images
         }))
+        
+    async def start_game(self):
+        print("consumer start game started")
+        await sync_to_async(PlayGame)()
+            
 
