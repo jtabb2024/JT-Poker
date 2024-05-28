@@ -3,7 +3,6 @@ from asgiref.sync import async_to_sync
 
 class MessageTracker:
     _instance = None
-    instance_count = 0  # Class variable to track the number of instances
 
     def __new__(cls, *args, **kwargs):
         if not cls._instance:
@@ -15,8 +14,6 @@ class MessageTracker:
         if not self._initialized:
             self.messages = []
             self.card_images = []  # initialize card images list
-            MessageTracker.instance_count += 1
-            # self.messages.append(f"Message Tracker Class is now running: {MessageTracker.instance_count}")
             self._initialized = True
 
     @classmethod
@@ -42,10 +39,7 @@ class MessageTracker:
         self.broadcast_card_images()
 
     def get_card_images(self):
-        card_images = self.card_images
-        self.card_images = []  # Clear the card images after they are fetched
-        print('************Getting card images:', card_images)  # Log the images being returned
-        return card_images
+        return self.card_images
 
     def clear_card_images(self):  # clear card images
         self.card_images.clear()

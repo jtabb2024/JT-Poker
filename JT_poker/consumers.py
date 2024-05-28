@@ -25,22 +25,7 @@ class PokerConsumer(AsyncWebsocketConsumer):
         message = json.loads(text_data)
         print(f"Received message type: {message['type']}")  # Print the message 
 
-        if message['type'] == 'fetch_messages':
-            mtracker = MessageTracker.instance()  # Get the singleton instance
-            messages = mtracker.get_messages()
-            await self.send(text_data=json.dumps({
-                'type': 'update_messages',
-                'messages': messages
-            }))
-        elif message['type'] == 'fetch_card_images':
-            mtracker = MessageTracker.instance()  # Get the singleton instance
-            card_images = mtracker.get_card_images()  # This should be the card data
-            await self.send(text_data=json.dumps({
-                'type': 'update_card_images',
-                'card_images': card_images
-            }))
-        elif message['type'] == 'start_game':
-            print("asyncio create task")
+        if message['type'] == 'start_game':
             asyncio.create_task(self.start_game())
 
     async def update_messages(self, event):
