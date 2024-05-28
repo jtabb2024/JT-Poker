@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+{% load static %}
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -55,6 +56,10 @@
             gap: 10px; /* Space between cards */
             height: calc(100vh - 80px - 15px - 10%); /* Adjust for header, padding, and bottom bar */
             width: 80%;
+            /* Background image will be set dynamically in the cards element */
+            background-size: 100% 100%; /* Ensure the image covers the entire container */
+            background-position: center; /* Center the image */
+            background-repeat: no-repeat; /* Do not repeat the image */
         }
         .card {
             position: relative;
@@ -100,6 +105,14 @@
         <div id="cards">
             <!-- Card images will be appended here dynamically -->
         </div>
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                const staticUrl = '{% static "images/tables/" %}'; 
+                const tableImage = 'pokertable.png'; 
+                const cardsElement = document.getElementById('cards');
+                cardsElement.style.backgroundImage = `url('${staticUrl + tableImage}')`;
+            });
+        </script>
     </div>
 
 {% load static %}
@@ -130,13 +143,13 @@
             const cardsContainer = document.getElementById('cards');
             cardsContainer.innerHTML = ''; // Clear previous card images
             data.card_images.forEach((card, index) => {
-                var cardDiv = document.createElement('div');
+                const cardDiv = document.createElement('div');
                 cardDiv.className = 'card';
                 cardDiv.dataset.selected = '0';
                 cardDiv.dataset.order = index;
 
-                var button = document.createElement('button');
-                var img = document.createElement('img');
+                const button = document.createElement('button');
+                const img = document.createElement('img');
                 img.src = staticUrl + card.trim();
                 img.draggable = true;
                 button.appendChild(img);
@@ -152,8 +165,44 @@
                     event.dataTransfer.setData('text/plain', cardDiv.dataset.order);
                 });
 
+                img.addEventListener('touchstart', function(event) {
+                    touchStartX = event.touches[0].clientX;
+                    touchStartY = event.touches[0].clientY;
+                    draggedElement = cardDiv;
+                    event.dataTransfer = {}; // Simulate dataTransfer for touch
+                    event.dataTransfer.setData = function(type, val) {
+                        this[type] = val;
+                    };
+                    event.dataTransfer.getData = function(type) {
+                        return this[type];
+                    };
+                    event.dataTransfer.setData('text/plain', cardDiv.dataset.order);
+                });
+
                 cardsContainer.addEventListener('dragover', function(event) {
                     event.preventDefault();
+                });
+
+                cardsContainer.addEventListener('touchmove', function(event) {
+                    event.preventDefault();
+                    const touch = event.touches[0];
+                    const targetElement = document.elementFromPoint(touch.clientX, touch.clientY);
+                    const targetCard = targetElement.closest('.card');
+                    if (targetCard && draggedElement) {
+                        const sourceOrder = draggedElement.dataset.order;
+                        const targetOrder = targetCard.dataset.order;
+                        const sourceCard = document.querySelector(`.card[data-order="${sourceOrder}"]`);
+                        const targetCardElement = document.querySelector(`.card[data-order="${targetOrder}"]`);
+
+                        if (sourceCard !== targetCardElement) {
+                            const sourceParent = sourceCard.parentNode;
+                            const targetParent = targetCardElement.parentNode;
+
+                            const sourceNext = sourceCard.nextSibling === targetCardElement ? sourceCard : sourceCard.nextSibling;
+                            targetParent.insertBefore(sourceCard, targetCardElement);
+                            sourceParent.insertBefore(targetCardElement, sourceNext);
+                        }
+                    }
                 });
 
                 cardDiv.addEventListener('drop', function(event) {
@@ -162,15 +211,38 @@
                     const targetOrder = this.dataset.order;
                     const sourceCard = document.querySelector(`.card[data-order="${sourceOrder}"]`);
                     const targetCard = document.querySelector(`.card[data-order="${targetOrder}"]`);
-            
+
                     if (sourceCard !== targetCard) {
-                        if (sourceOrder < targetOrder) {
-                            // If the source card is to the left of the target card, insert it to the right of the target card
-                            cardsContainer.insertBefore(sourceCard, targetCard.nextSibling);
-                        } else {
-                            // If the source card is to the right of the target card, insert it to the left of the target card
-                            cardsContainer.insertBefore(sourceCard, targetCard);
+                        const sourceParent = sourceCard.parentNode;
+                        const targetParent = targetCard.parentNode;
+
+                        const sourceNext = sourceCard.nextSibling === targetCard ? sourceCard : sourceCard.nextSibling;
+                        targetParent.insertBefore(sourceCard, targetCard);
+                        sourceParent.insertBefore(targetCard, sourceNext);
+                    }
+                });
+
+                cardDiv.addEventListener('touchend', function(event) {
+                    if (draggedElement) {
+                        const touch = event.changedTouches[0];
+                        const targetElement = document.elementFromPoint(touch.clientX, touch.clientY);
+                        const targetCard = targetElement.closest('.card');
+                        if (targetCard) {
+                            const sourceOrder = draggedElement.dataset.order;
+                            const targetOrder = targetCard.dataset.order;
+                            const sourceCard = document.querySelector(`.card[data-order="${sourceOrder}"]`);
+                            const targetCardElement = document.querySelector(`.card[data-order="${targetOrder}"]`);
+
+                            if (sourceCard !== targetCardElement) {
+                                const sourceParent = sourceCard.parentNode;
+                                const targetParent = targetCardElement.parentNode;
+
+                                const sourceNext = sourceCard.nextSibling === targetCardElement ? sourceCard : sourceCard.nextSibling;
+                                targetParent.insertBefore(sourceCard, targetCardElement);
+                                sourceParent.insertBefore(targetCardElement, sourceNext);
+                            }
                         }
+                        draggedElement = null;
                     }
                 });
 
