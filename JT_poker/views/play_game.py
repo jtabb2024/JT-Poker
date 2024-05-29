@@ -3,34 +3,16 @@ from ..game_logic.message_tracker import MessageTracker
 
 class PlayGame(object):
 
-    instance_count = 0  # Class variable to track the number of instances
-
     def __init__(self, chips=500, ante=5, opponents=["John Wayne", "Jeff Tabb", "Ted Williams"]):
-        PlayGame.instance_count += 1
 
         # Get the message_tracker game instance 
         self.mtracker = MessageTracker.instance() 
 
         # store input parameters
-        self.mtracker.add_message(f"PlayGame is executing... Instance count: {PlayGame.instance_count}")
         self.OPPONENTS = opponents
         self.CHIPS = chips
         self.ANTE = ante
         
-        # initialise game
-        self.Configuration()
-        
-        # gameloop
-        while self.NewHand():
-            self.BettingPhase("preflop")
-            self.SwitchingPhase()
-            self.BettingPhase("postflop")
-            self.EvaluationPhase()
-        else:
-            self.EndGame()
-
-    def Configuration(self):
-        #print("Configuring game...")  # Debug print
         # initialise dealer
         self.dealer = Dealer(len(self.OPPONENTS) + 1)
         # get name and begin tracking human
@@ -40,6 +22,16 @@ class PlayGame(object):
         # initialise table and economy
         self.dealer.InitializeTable([player], self.OPPONENTS, self.CHIPS)
         self.dealer.UpdateAnte(self.ANTE)
+        
+    def StartGame(self):
+        # gameloop
+        while self.NewHand():
+            self.BettingPhase("preflop")
+            self.SwitchingPhase()
+            self.BettingPhase("postflop")
+            self.EvaluationPhase()
+        else:
+            self.EndGame()
 
     def NewHand(self):
         # check human has chips

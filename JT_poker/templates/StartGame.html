@@ -52,8 +52,10 @@
             overflow-y: scroll;
             flex-grow: 1;
             display: flex;
-            flex-wrap: wrap;
+            justify-content: center; /* Center the cards horizontally */
+            align-items: flex-end; /* Align cards towards the bottom */
             gap: 10px; /* Space between cards */
+            padding-bottom: 50px; /* Space above the bottom of the cards element */
             height: calc(100vh - 80px - 15px - 10%); /* Adjust for header, padding, and bottom bar */
             width: 80%;
             /* Background image will be set dynamically in the cards element */
@@ -268,6 +270,12 @@
     }
 
     document.getElementById('play-button').addEventListener('click', function() {
+        chatSocket.send(JSON.stringify({
+            'type': 'start_game'
+        }));
+    });
+
+    document.getElementById('play-button').addEventListener('touchstart', function() {
         chatSocket.send(JSON.stringify({
             'type': 'start_game'
         }));

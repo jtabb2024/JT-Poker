@@ -44,6 +44,7 @@ class PokerConsumer(AsyncWebsocketConsumer):
         
     async def start_game(self):
         print("consumer start game started")
-        await sync_to_async(PlayGame)()
+        play_game_instance = await sync_to_async(PlayGame)()
+        await sync_to_async(play_game_instance.StartGame)()
             
 
