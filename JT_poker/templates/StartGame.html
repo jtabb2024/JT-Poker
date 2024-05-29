@@ -38,13 +38,35 @@
             background-color: #f8f9fa;
             border-right: 1px solid #dee2e6;
             padding: 15px;
-            overflow-y: scroll;
             width: 300px;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
-            height: 30%; /* Half the screen */
+            height: 100%; /* Half the screen */
             max-height: 100vh; /* Limit height */
+        }
+        #messagedisplay {
+            height: 60%; /* Fixed height */
+            overflow-y: auto;
+        }
+        #LBbuttons {
+            height: 40%; /* Fixed height */
+            background-color: #f8f9fa;
+            border-top: 1px solid #dee2e6;
+            padding: 15px;
+            display: flex;
+            justify-content: center; /* Center the buttons horizontally */
+            align-items: center; /* Center the buttons vertically */
+        }
+        #play-button {
+            padding: 10px 20px; /* Add some padding */
+            border-radius: 5px; /* Rounded edges */
+            width: 100px; /* Fixed width */
+            height: 40px; /* Fixed height */
+            display: inline-block; /* Ensure it does not stretch */
+            justify-content: center; /* Center text horizontally */
+            align-items: center; /* Center text vertically */
+            text-align: center; /* Center text inside the button */
         }
         #cards {
             background-color: #008000; /* Darker green color */
@@ -99,10 +121,13 @@
     </div>
     <div id="main">
         <div id="messages">
-            <div>
+            <div id="messagedisplay">
                 <!-- Messages will be appended here dynamically -->
             </div>
-            <button id="play-button" class="btn btn-primary">Play</button>
+            <div id="LBbuttons">
+                <button id="play-button" class="btn btn-primary">Play</button>
+                <!-- You can add more buttons here -->
+            </div>
         </div>
         <div id="cards">
             <!-- Card images will be appended here dynamically -->
@@ -110,7 +135,7 @@
         <script>
             document.addEventListener('DOMContentLoaded', function() {
                 const staticUrl = '{% static "images/tables/" %}'; 
-                const tableImage = 'pokertable.png'; 
+                const tableImage = 'pokertable1.png'; 
                 const cardsElement = document.getElementById('cards');
                 cardsElement.style.backgroundImage = `url('${staticUrl + tableImage}')`;
             });
@@ -131,7 +156,7 @@
     chatSocket.onmessage = function(e) {
         const data = JSON.parse(e.data);
         if (data.type === 'update_messages') {
-            const messagesContainer = document.getElementById('messages');
+            const messagesContainer = document.getElementById('messagedisplay');
             messagesContainer.innerHTML = ''; // Clear previous messages
             const messages = data.messages.slice(-20); // Only take the last 20 messages
             messages.forEach(message => {
