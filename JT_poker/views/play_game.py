@@ -3,7 +3,7 @@ from ..game_logic.message_tracker import MessageTracker
 
 class PlayGame(object):
 
-    def __init__(self, chips=500, ante=5, opponents=["John Wayne", "Jeff Tabb", "Ted Williams"]):
+    def __init__(self, chips=500, ante=5, opponents=["John Wayne", "Stephen Baker", "Ted Williams"]):
 
         # Get the message_tracker game instance 
         self.mtracker = MessageTracker.instance() 
@@ -27,6 +27,8 @@ class PlayGame(object):
         # gameloop
         while self.NewHand():
             self.BettingPhase("preflop")
+            if self.dealer.action.beings["humans"] == [self.HUMAN]:
+                self.mtracker.add_message(f"Bet has been place by Human")
             self.SwitchingPhase()
             self.BettingPhase("postflop")
             self.EvaluationPhase()
@@ -109,7 +111,7 @@ class PlayGame(object):
                 if self.dealer.EditHand(name, discards):
                     if name == self.HUMAN and discards:
                         print(f"[CARDS] Your new hand is {self.dealer.cards.players[name]['cards']}")
-                        self.mtracker.add_message(f"[CARDS] Your new hand is {self.dealer.cards.players[name]['cards']}")
+                        self.mtracker.add_message(f"Your new hand is {self.dealer.cards.players[name]['cards']}")
                     break
         return True
 

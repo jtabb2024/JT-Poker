@@ -476,15 +476,15 @@ class HandTracker(object):
         """
         try:
             imagehand = self.Hand(name)
-            print('************Image Hand:', imagehand)  # Log the hand
+            # print('************Image Hand:', imagehand)  # Log the hand
             card_images = [card.get_CardImages() for card in imagehand]  # This should already be flat
-            print('************Hand images before flattening:', card_images)  # Log the images being returned
+            # print('************Hand images before flattening:', card_images)  # Log the images being returned
             
             # Flatten the list if it is nested
             if card_images and isinstance(card_images[0], list):
                 card_images = [img for sublist in card_images for img in sublist]
             
-            print('************Hand images after flattening:', card_images)  # Log the images being returned
+            # print('************Hand images after flattening:', card_images)  # Log the images being returned
             return card_images
         except KeyError:
             raise KeyError(f"{name} is not being tracked.")

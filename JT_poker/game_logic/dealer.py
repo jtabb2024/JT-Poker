@@ -22,12 +22,12 @@ class Dealer(object):
         self.seats.MoveButton()
         player = self.seats.button["player"]
         print(f"[BUTTON] The button was given to {player}.") # remove this when ready and all other print statements
-        self.mtracker.add_message(f"[BUTTON] The button was given to {player}.")
+        self.mtracker.add_message(f"The button was given to {player}.")
 
     def ShuffleDeck(self):
         self.hands.ShuffleDeck()
         print(f"[CARDS] The deck has been shuffled.")
-        self.mtracker.add_message(f"[CARDS] The deck has been shuffled.")
+        self.mtracker.add_message(f"The deck has been shuffled.")
         
     def DealHands(self):
         # determine players in the round and begin tracking
@@ -37,7 +37,7 @@ class Dealer(object):
         self.hands.DealPlayersIn()
         self.hands.EvaluatePlayersIn()
         print(f"[HANDS] Hands have been dealt.")
-        self.mtracker.add_message(f"[HANDS] Hands have been dealt.")
+        self.mtracker.add_message(f"Cards have been dealt.")
         for name in names:
             if name in self.action.beings["humans"]:
                     hand = self.hands.Hand(name)
@@ -57,10 +57,10 @@ class Dealer(object):
             # log approved request
             if discards:
                 print(f"[HANDS] {name} swapped {len(discards)} cards.")
-                self.mtracker.add_message(f"[HANDS] {name} swapped {len(discards)} cards.")
+                self.mtracker.add_message(f"{name} swapped {len(discards)} cards.")
             else:
                 print(f"[CARDS] {name} didn't swap any cards.")
-                self.mtracker.add_message(f"[CARDS] {name} didn't swap any cards.")
+                self.mtracker.add_message(f"{name} didn't swap any cards.")
             return True
         return False
         
@@ -68,7 +68,7 @@ class Dealer(object):
         # collect all cards and log
         self.hands.CollectCards()
         print(f"[CARDS] Cards have been collected.")
-        self.mtracker.add_message(f"[CARDS] Cards have been collected.")
+        self.mtracker.add_message(f"Cards have been collected.")
         
         
     def TakeAnte(self):
@@ -79,11 +79,11 @@ class Dealer(object):
             # log all-in or not
             if status["bet_all"]:
                 print(f"[ANTE] The ante forced {name} to go all-in with {amount} chips!")
-                self.mtracker.add_message(f"[ANTE] The ante forced {name} to go all-in with {amount} chips!")
+                self.mtracker.add_message(f"The ante forced {name} to go all-in with {amount} chips!")
                 self.action.SetAllIn(name)
             elif status["bet_something"]:
                 print(f"[ANTE] {name} paid {amount} chips for the ante.")
-                self.mtracker.add_message(f"[ANTE] {name} paid {amount} chips for the ante.")
+                self.mtracker.add_message(f"{name} paid {amount} chips for the ante.")
     
     def TakeBet(self, name, amount):
         # act on bet request and return success or not
@@ -100,33 +100,33 @@ class Dealer(object):
                 self.action.SetAllIn(name)
                 surplass = amount - self.chips.CallAmount(name) 
                 print(f"[ACTION] {name} has raised by {surplass} and gone all-in!")
-                self.mtracker.add_message(f"[ACTION] {name} has raised by {surplass} and gone all-in!")
+                self.mtracker.add_message(f"{name} has raised by {surplass} and gone all-in!")
             elif status["has_raised"] and status["has_mincalled"]:
                 self.action.ExtendRound()
                 self.action.SetMinCalled(name)
                 surplass = amount - self.chips.CallAmount(name) 
                 print(f"[ACTION] {name} has raised by {surplass}.")
-                self.mtracker.add_message(f"[ACTION] {name} has raised by {surplass}.")
+                self.mtracker.add_message(f"{name} has raised by {surplass}.")
             elif status["has_allin"] and status["has_mincalled"]:
                 self.action.SetAllIn(name)
                 print(f"[ACTION] {name} has gone all-in to call!")
-                self.mtracker.add_message(f"[ACTION] {name} has gone all-in to call!")
+                self.mtracker.add_message(f"{name} has gone all-in to call!")
             elif status["has_mincalled"] and amount == 0:
                 self.action.SetMinCalled(name)
                 print(f"[ACTION] {name} has checked.")
-                self.mtracker.add_message(f"[ACTION] {name} has checked.")
+                self.mtracker.add_message(f"{name} has checked.")
             elif status["has_mincalled"]:
                 self.action.SetMinCalled(name)
                 print(f"[ACTION] {name} has called.")
-                self.mtracker.add_message(f"[ACTION] {name} has called.")
+                self.mtracker.add_message(f"{name} has called.")
             elif status["has_folded"]:
                 self.action.SetFolded(name)
                 print(f"[ACTION] {name} has folded.")
-                self.mtracker.add_message(f"[ACTION] {name} has folded.")
+                self.mtracker.add_message(f"{name} has folded.")
             elif status["has_allin"]:
                 self.action.SetAllIn(name)
                 print(f"[ACTION] {name} couldn't call but has gone all-in.")
-                self.mtracker.add_message(f"[ACTION] {name} couldn't call but has gone all-in.")
+                self.mtracker.add_message(f"{name} couldn't call but has gone all-in.")
             self.chips.Bet(name, amount)
             return True
         else:
@@ -166,7 +166,7 @@ class Dealer(object):
                     # Get the 'hand' part of the info dictionary for the viewer
                     viewer_hand = info["self"].get("hand", [])
                     # Add the viewer's hand to the message tracker
-                    self.mtracker.add_message(f"This is the Human TableView player hand: {viewer_hand}")
+                    # self.mtracker.add_message(f"This is the Human TableView player hand: {viewer_hand}")
             else:
                 # add info about other players
                 info["others"][name] = {}
@@ -185,7 +185,7 @@ class Dealer(object):
         self.chips.UntrackPlayers(names)
         for name in names:
             print(f"[PLAYER] {name} is leaving the table.")
-            self.mtracker.add_message(f"[PLAYER] {name} is leaving the table.")
+            self.mtracker.add_message(f"{name} is leaving the table.")
          
 
     def CalculateRewards(self, player_info):
@@ -216,7 +216,7 @@ class Dealer(object):
         if len(showdown) < 2:
             winner = showdown[0]
             print(f"[SHOWDOWN] {winner} won {rewards[winner]} chips.")
-            self.mtracker.add_message(f"[SHOWDOWN] {winner} won {rewards[winner]} chips.")
+            self.mtracker.add_message(f"[SHOWDOWN!] {winner} won {rewards[winner]} chips.")
             return True
         
         # determine which players should reveal hands
@@ -239,10 +239,10 @@ class Dealer(object):
                 if name not in mucks:
                     hand = self.hands.players[name]["rank_c"]
                     print(f"[REWARDS] {name} won {reward} with a {hand}")
-                    self.mtracker.add_message(f"[REWARDS] {name} won {reward} with a {hand}")
+                    self.mtracker.add_message(f"{name} won {reward} with a {hand}")
                 else:
                     print(f"[REWARDS] {name} got {reward} chips back.")
-                    self.mtracker.add_message(f"[REWARDS] {name} got {reward} chips back.")
+                    self.mtracker.add_message(f"{name} got {reward} chips back.")
 
     def StartingChips(self, amount):
         # give chips to all players
@@ -251,13 +251,13 @@ class Dealer(object):
         for name in names:
             self.chips.Reward(name, amount)
         print(f"[SETUP] All players have been given {amount} chips.")
-        self.mtracker.add_message(f"[SETUP] All players have been given {amount} chips.")
+        self.mtracker.add_message(f"All players have been given {amount} chips.")
 
     def UpdateAnte(self, amount):
         # set ante amount
         self.chips.UpdateAnte(amount)
         print(f"[SETUP] The ante has been set to {amount} chips.")
-        self.mtracker.add_message(f"[SETUP] The ante has been set to {amount} chips.")
+        self.mtracker.add_message(f"The ante has been set to {amount} chips.")
 
     def TrackedPlayers(self):
         # return all tracked players
@@ -282,7 +282,7 @@ class Dealer(object):
         # log summary of player chips
         for name in self.TrackedPlayers():
             print(f"[STANDINGS] {name} has got {self.chips.players[name]['stack']} chips remaining.")
-            self.mtracker.add_message(f"[STANDINGS] {name} has got {self.chips.players[name]['stack']} chips remaining.")
+            self.mtracker.add_message(f"{name} has got {self.chips.players[name]['stack']} chips remaining.")
     
     def SeatPlayers(self, players):
         self.seats.TrackPlayers(players)
