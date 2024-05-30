@@ -110,8 +110,9 @@ class PlayGame(object):
                 discards = self.dealer.action.SelectDiscards(name, info)
                 if self.dealer.EditHand(name, discards):
                     if name == self.HUMAN and discards:
-                        print(f"[CARDS] Your new hand is {self.dealer.cards.players[name]['cards']}")
-                        self.mtracker.add_message(f"Your new hand is {self.dealer.cards.players[name]['cards']}")
+                        print(f"[CARDS] Your new hand is {self.dealer.hands.players[name]['cards']}")
+                        # still need to send cards to mtracker and refresh the html page with new cards
+                        self.mtracker.add_message(f"Your new hand is {self.dealer.hands.players[name]['cards']}")
                     break
         return True
 

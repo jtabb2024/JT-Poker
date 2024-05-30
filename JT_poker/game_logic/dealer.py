@@ -47,6 +47,9 @@ class Dealer(object):
                     self.mtracker.add_card_images(handimages)
         # initialise player statuses
         self.action.NewRound(names)
+        # debug info below only
+        PlayerInfo = self.PlayerInfo()
+        print(PlayerInfo)
     
     def EditHand(self, name, discards):
         hand = self.hands.Hand(name)
@@ -143,7 +146,7 @@ class Dealer(object):
             if name in self.hands.players:
                 info[name]["hand"] = self.hands.players[name]
             if name in self.action.players:
-                info[name]["status"] = self.hands.players[name]
+                info[name]["status"] = self.action.players[name]
         # log missing info
         if not self.action.players:
             print(f"[WARNING] Nobody has a status.")

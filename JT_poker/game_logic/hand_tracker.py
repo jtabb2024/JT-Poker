@@ -73,6 +73,8 @@ class HandTracker(object):
         self.players = {}
         # load data containing ratings of all possible five card hands
         self.LoadData()
+        
+        self.mtracker = MessageTracker.instance()
 
     def TrackPlayers(self, names : list[str]):
         """
@@ -215,6 +217,7 @@ class HandTracker(object):
 
         # get new cards and return them
         new_cards = [next(self.DECK) for _ in range(len(discards))]
+        self.mtracker.add_message(f"{name} didn't swap any cards.")
         return new_cards
 
     def SwapPlayersCards(self, name : str, discards : list[Card]):
