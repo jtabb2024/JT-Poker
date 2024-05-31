@@ -162,9 +162,9 @@ class HandTracker(object):
         try:
             # unallocate cards from player
             self.players[name]["cards"] = [card for card in self.Hand(name) if card not in cards]
-            # need to test and make sure this is correct and removes the card images from the hand.
-            # Also need to test that getting additional cards does not add too many images or cards to hand
-            # self.players[name]["card_images"] = {card: img for card, img in self.players[name]["card_images"].items() if card not in cards}
+            # unallocate card images from player
+            card_images = [card.get_CardImages() for card in cards]
+            self.players[name]["card_images"] = [img for img in self.players[name]["card_images"] if img not in card_images]
         except KeyError:
             raise KeyError(f"{name} is not being tracked.")
 

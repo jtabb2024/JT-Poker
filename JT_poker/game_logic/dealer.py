@@ -1,3 +1,4 @@
+import json
 from functools import reduce
 from itertools import groupby
 from math import inf
@@ -170,7 +171,7 @@ class Dealer(object):
                     # Get the 'hand' part of the info dictionary for the viewer
                     viewer_hand = info["self"].get("hand", [])
                     # Add the viewer's hand to the message tracker
-                    # self.mtracker.add_message(f"This is the Human TableView player hand: {viewer_hand}")
+                    self.mtracker.add_message(f"This is the Human TableView player hand: {viewer_hand}")
             else:
                 # add info about other players
                 info["others"][name] = {}
