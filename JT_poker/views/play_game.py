@@ -28,7 +28,7 @@ class PlayGame(object):
         while self.NewHand():
             self.BettingPhase("preflop")
             if self.dealer.action.beings["humans"] == [self.HUMAN]:
-                self.mtracker.add_message(f"Bet has been place by Human")
+                self.mtracker.add_message(f"Bet has been placed by Human")
             self.SwitchingPhase()
             self.BettingPhase("postflop")
             self.EvaluationPhase()

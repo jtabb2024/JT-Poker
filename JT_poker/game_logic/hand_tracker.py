@@ -135,6 +135,8 @@ class HandTracker(object):
         try:
             # allocate cards to player
             self.players[name]["cards"].extend(cards)
+            card_images = [card.get_CardImages() for card in cards]
+            self.players[name]["card_images"].extend(card_images)
         except KeyError:
             raise KeyError(f"{name} is not being tracked.")
 
@@ -160,6 +162,9 @@ class HandTracker(object):
         try:
             # unallocate cards from player
             self.players[name]["cards"] = [card for card in self.Hand(name) if card not in cards]
+            # need to test and make sure this is correct and removes the card images from the hand.
+            # Also need to test that getting additional cards does not add too many images or cards to hand
+            # self.players[name]["card_images"] = {card: img for card, img in self.players[name]["card_images"].items() if card not in cards}
         except KeyError:
             raise KeyError(f"{name} is not being tracked.")
 
@@ -477,17 +482,18 @@ class HandTracker(object):
         """
         Provides the hand images (image names of each card) of a player being tracked.
         """
-        try:
-            imagehand = self.Hand(name)
-            # print('************Image Hand:', imagehand)  # Log the hand
-            card_images = [card.get_CardImages() for card in imagehand]  # This should already be flat
-            # print('************Hand images before flattening:', card_images)  # Log the images being returned
+        #try:
+            #imagehand = self.Hand(name)
+            #card_images = [card.get_CardImages() for card in imagehand]  # This should already be flat
             
             # Flatten the list if it is nested
-            if card_images and isinstance(card_images[0], list):
-                card_images = [img for sublist in card_images for img in sublist]
+            #if card_images and isinstance(card_images[0], list):
+                #card_images = [img for sublist in card_images for img in sublist]
             
-            # print('************Hand images after flattening:', card_images)  # Log the images being returned
-            return card_images
+            #return card_images
+        #except KeyError:
+            #raise KeyError(f"{name} is not being tracked.")
+        try:
+            return self.players[name]["card_images"]
         except KeyError:
             raise KeyError(f"{name} is not being tracked.")

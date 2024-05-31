@@ -147,6 +147,7 @@ class Dealer(object):
                 info[name]["hand"] = self.hands.players[name]
             if name in self.action.players:
                 info[name]["status"] = self.action.players[name]
+            info[name]["handimages"] = self.hands.HandImages(name)
         # log missing info
         if not self.action.players:
             print(f"[WARNING] Nobody has a status.")
