@@ -29,9 +29,18 @@ class PlayGame(object):
             self.BettingPhase("preflop")
             if self.dealer.action.beings["humans"] == [self.HUMAN]:
                 self.mtracker.add_message(f"Bet has been placed by Human")
+                PlayerInfo = self.dealer.PlayerInfo()
+                print(PlayerInfo)
             self.SwitchingPhase()
+            PlayerInfo = self.dealer.PlayerInfo()
+            print(PlayerInfo)
             self.BettingPhase("postflop")
+            PlayerInfo = self.dealer.PlayerInfo()
+            print(PlayerInfo)
             self.EvaluationPhase()
+            #Need to fix if using PlayerInfo as game state at this point if there is a winner the other players are not being tracked
+            #PlayerInfo = self.dealer.PlayerInfo()
+            #print(PlayerInfo)
         else:
             self.EndGame()
 
