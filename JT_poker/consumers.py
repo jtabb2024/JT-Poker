@@ -2,7 +2,7 @@ import json
 import asyncio
 from channels.generic.websocket import AsyncWebsocketConsumer
 from asgiref.sync import async_to_sync, sync_to_async
-from .views.play_game import PlayGame
+from .game_logic.play_game import PlayGame
 from .game_logic.message_tracker import MessageTracker
 
 class PokerConsumer(AsyncWebsocketConsumer):

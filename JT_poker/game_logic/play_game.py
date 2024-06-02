@@ -1,5 +1,5 @@
-from ..game_logic.dealer import Dealer
-from ..game_logic.message_tracker import MessageTracker
+from .dealer import Dealer
+from .message_tracker import MessageTracker
 
 class PlayGame(object):
 
