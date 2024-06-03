@@ -50,7 +50,10 @@ class Dealer(object):
         self.action.NewRound(names)
         # debug info below only
         PlayerInfo = self.PlayerInfo()
-        print(PlayerInfo)
+        print("Player Info: ", PlayerInfo)
+        for name in names:
+            TableInfo = self.TableView(name)
+            print("Table Info: ", TableInfo)
     
     def EditHand(self, name, discards):
         hand = self.hands.Hand(name)
@@ -148,7 +151,7 @@ class Dealer(object):
                 info[name]["hand"] = self.hands.players[name]
             if name in self.action.players:
                 info[name]["status"] = self.action.players[name]
-            info[name]["handimages"] = self.hands.HandImages(name)
+            # info[name]["handimages"] = self.hands.HandImages(name)
         # log missing info
         if not self.action.players:
             print(f"[WARNING] Nobody has a status.")
@@ -182,6 +185,7 @@ class Dealer(object):
         # add info game circumstances
         info["game"]["call"] = self.chips.CallAmount(viewer)
         info["game"]["pot"] = self.chips.PotAmount()
+        print("Game Info:", info["game"])
         return info
 
     def KickPlayers(self, names):
