@@ -23,30 +23,21 @@ class PlayGame(object):
         self.dealer.InitializeTable([player], self.OPPONENTS, self.CHIPS)
         self.dealer.UpdateAnte(self.ANTE)
         
+    def print_playerinfo(self, p_info):
+        print("Player info: ", p_info)
+        
     def StartGame(self):
         # gameloop
         while self.NewHand():
             self.BettingPhase("preflop")
             if self.dealer.action.beings["humans"] == [self.HUMAN]:
                 self.mtracker.add_message(f"Bet has been placed by Human")
-                PlayerInfo1 = self.dealer.PlayerInfo()
-                print("Player Info: ", PlayerInfo1)
-                TableInfo1 = self.dealer.TableView()
-                print("Table Info: ", TableInfo1)
-            PlayerInfo2 = self.dealer.PlayerInfo()
-            print("Player Info: ", PlayerInfo2)
-            TableInfo2 = self.dealer.TableView()
-            print("Table Info: ", TableInfo2)
+                self.print_playerinfo(self.dealer.PlayerInfo())
+            self.print_playerinfo(self.dealer.PlayerInfo())
             self.SwitchingPhase()
-            PlayerInfo = self.dealer.PlayerInfo()
-            print(PlayerInfo)
-            TableInfo = self.dealer.TableView()
-            print(TableInfo)
+            self.print_playerinfo(self.dealer.PlayerInfo())
             self.BettingPhase("postflop")
-            PlayerInfo = self.dealer.PlayerInfo()
-            print(PlayerInfo)
-            TableInfo = self.dealer.TableView()
-            print(TableInfo)
+            self.print_playerinfo(self.dealer.PlayerInfo())
             self.EvaluationPhase()
             #Need to fix if using PlayerInfo as game state at this point if there is a winner the other players are not being tracked
             #PlayerInfo = self.dealer.PlayerInfo()

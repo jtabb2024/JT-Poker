@@ -166,6 +166,7 @@ class Dealer(object):
         for name in self.seats.players:
             # add info about viewer
             if viewer == name:
+                info["self"]["name"] = name
                 info["self"]["seat"] = self.seats.players[name]
                 info["self"]["chips"] = self.chips.players[name]
                 info["self"]["status"] = self.action.players[name]
