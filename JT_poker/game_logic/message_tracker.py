@@ -40,68 +40,96 @@ class MessageTracker:
 
     def get_card_images(self):
         return self.card_images
+    
+    def send_player_state(self, player_info):
+        self.broadcast_player_info(player_info)
 
     def clear_card_images(self):  # clear card images
         self.card_images.clear()
         self.broadcast_card_images()
     
-    def send_playerInfo(self, player_info)
+    def broadcast_player_info(self, player_info):
         # Game State that will be sent to the poker game window (player info, player actions, etc.
+        channel_layer = get_channel_layer()
+        async_to_sync(channel_layer.group_send)(
+        'poker_group',  # Group name
+        {
+            'type': 'update_player_info',
+            'player_info': player_info,
+        }
+    )
         
-        
-    def send_tableview(self, table_view)
+    def send_tableview(self, table_view):
         # Game State that will be sent to the poker game window (table view, etc.)
+        pass
         
-    def send_lb_message(self, lb_message)
+    def send_lb_message(self, lb_message):
         # Messages that will be sent to the left bar in the poker game window
+        pass
         
-    def send_pot(self, pot_amount)
+    def send_pot(self, pot_amount):
         # Int representing the amount of chips in the pot for the poker game window
+        pass
         
-    def send_player_chips(self, name, player_chips)
+    def send_player_chips(self, name, player_chips):
         # Int representing the amount of chips the player has for the poker game window
+        pass
 
-    def send_player_bet(self, name, player_bet)
+    def send_player_bet(self, name, player_bet):
         # Int representing the amount of chips the player has bet for the poker game window
+        pass
         
-    def send_player_action(self, name, player_action)
+    def send_player_action(self, name, player_action):
         # String representing the action the player took for the poker game window
+        pass
         
-    def send_player_hand(self, name, player_hand)
+    def send_player_hand(self, name, player_hand):
         # List of strings representing the cards the player has for the poker game window
+        pass
         
-    def send_player_status(self, name, player_status)
+    def send_player_status(self, name, player_status):
         # String representing the status of the player for the poker game window
+        pass
         
-    def send_player_turn(self, name, player_turn)
+    def send_player_turn(self, name, player_turn):
         # Boolean representing if it is the player's turn for the poker game window
+        pass
         
-    def send_player_winner(self, name, player_winner)
+    def send_player_winner(self, name, player_winner):
         # Boolean representing if the player is the winner for the poker game window
+        pass
         
-    def send_player_fold(self, name, player_fold)
+    def send_player_fold(self, name, player_fold):
         # Boolean representing if the player has folded for the poker game window
+        pass
         
-    def send_player_allin(self, name, player_allin)
+    def send_player_allin(self, name, player_allin):
         # Boolean representing if the player has gone all in for the poker game window
+        pass
         
-    def send_player_mincall(self, name, player_mincall)
+    def send_player_mincall(self, name, player_mincall):
         # Boolean representing if the player has made the minimum call for the poker game window
+        pass
     
-    def send_player_raise(self, name, player_raise)
+    def send_player_raise(self, name, player_raise):
         # Boolean representing if the player has raised for the poker game window
+        pass
         
-    def send_player_call(self, name, player_call)
+    def send_player_call(self, name, player_call):
         # Boolean representing if the player has called for the poker game window
+        pass
         
-    def send_player_check(self, name, player_check)
+    def send_player_check(self, name, player_check):
         # Boolean representing if the player has checked for the poker game window
+        pass
         
-    def send_player_discard(self, name, player_discard)
+    def send_player_discard(self, name, player_discard):
         # List of strings representing the cards the player has discarded for the poker game window
+        pass
         
-    def send_player_showdown(self, name, player_showdown)
+    def send_player_showdown(self, name, player_showdown):
         # Boolean representing if the player is in the showdown for the poker game window 
+        pass
 
     def broadcast_messages(self):
         channel_layer = get_channel_layer()

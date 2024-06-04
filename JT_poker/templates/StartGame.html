@@ -128,6 +128,7 @@
     <div id="header">
         <h1>Welcome to the Game</h1>
     </div>
+    <pre id="playerInfo"></pre>
     <div id="main">
         <div id="messages">
             <div id="messagedisplay">
@@ -164,7 +165,10 @@
 
     chatSocket.onmessage = function(e) {
         const data = JSON.parse(e.data);
-        if (data.type === 'update_messages') {
+        if (data.type === 'update_player_info') {
+            const playerInfoContainer = document.getElementById('playerInfo');
+            playerInfoContainer.textContent = JSON.stringify(data.player_info, null, 2);
+        } else if (data.type === 'update_messages') {
             const messagesContainer = document.getElementById('messagedisplay');
             messagesContainer.innerHTML = ''; // Clear previous messages
             const messages = data.messages.slice(-20); // Only take the last 20 messages

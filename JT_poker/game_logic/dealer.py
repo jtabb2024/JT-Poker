@@ -49,8 +49,9 @@ class Dealer(object):
         # initialise player statuses
         self.action.NewRound(names)
         # debug info below only
-        PlayerInfo = self.PlayerInfo()
-        print("Player Info: ", PlayerInfo)
+        player_info = self.PlayerInfo()
+        print("Player Info: ", player_info)
+        self.mtracker.send_player_state(player_info)
         for name in names:
             TableInfo = self.TableView(name)
             print("Table Info: ", TableInfo)
@@ -149,6 +150,7 @@ class Dealer(object):
             info[name]["chips"] = self.chips.players[name]
             if name in self.hands.players:
                 info[name]["hand"] = self.hands.players[name]
+                info[name]["hand"]["cards"] = [str(card) for card in info[name]["hand"]["cards"]]
             if name in self.action.players:
                 info[name]["status"] = self.action.players[name]
             # info[name]["handimages"] = self.hands.HandImages(name)
