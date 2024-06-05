@@ -135,7 +135,9 @@ class HandTracker(object):
         try:
             # allocate cards to player
             self.players[name]["cards"].extend(cards)
+            print("*******Hand_tracker def AssignCards hand with cards:", name, self.players[name]["cards"])
             card_images = [card.get_CardImages() for card in cards]
+            print("*******Hand_tracker def AssignCards card images:", name, card_images)
             self.players[name]["card_images"].extend(card_images)
         except KeyError:
             raise KeyError(f"{name} is not being tracked.")
@@ -162,9 +164,13 @@ class HandTracker(object):
         try:
             # unallocate cards from player
             self.players[name]["cards"] = [card for card in self.Hand(name) if card not in cards]
-            # unallocate card images from player
-            card_images = [card.get_CardImages() for card in cards]
-            self.players[name]["card_images"] = [img for img in self.players[name]["card_images"] if img not in card_images]
+            print("*******Hand_tracker def UnassignCards hand without cards:", name, self.players[name]["cards"])
+            
+            # Update card images based on remaining cards
+            #remaining_card_images = Card.get_images_from_cards_str(remaining_cards)
+            #print("REMAINING CARD IMAGES:", remaining_card_images)
+            #self.players[name]["card_images"].clear()
+            #self.players[name]["card_images"].extend(remaining_card_images)
         except KeyError:
             raise KeyError(f"{name} is not being tracked.")
 
@@ -222,7 +228,6 @@ class HandTracker(object):
 
         # get new cards and return them
         new_cards = [next(self.DECK) for _ in range(len(discards))]
-        self.mtracker.add_message(f"{name} didn't swap any cards.")
         return new_cards
 
     def SwapPlayersCards(self, name : str, discards : list[Card]):
@@ -245,10 +250,12 @@ class HandTracker(object):
             raise Exception(f"Not enough cards in deck to swap {discards}.")
 
         # remove discards from hand
+        print("*******Hand_tracker def SwapPlayersCards remove these cards:", name, discards)
         self.UnassignCards(name, discards)
 
         # get new cards and assign to player
         new_cards = [next(self.DECK) for _ in range(len(discards))]
+        print("*******Hand_tracker def SwapPlayersCards new cards:", name, new_cards)
         self.AssignCards(name, new_cards)
 
     def AllowDiscards(self, hand : list[Card], discards : list[Card]) -> bool:
@@ -262,7 +269,6 @@ class HandTracker(object):
         
         """
         # assert 5 card hands
-        print("DISCARD LIST:", discards)
         if len(hand) != 5 or len(discards) > 5:
             raise Exception("Unknown variant of poker.")
         # the whole hand cannot be discarded
@@ -474,6 +480,7 @@ class HandTracker(object):
         """
         # assert player is being tracked and return hand
         try:
+            print("*******Hand_tracker def Hand:", name,  self.players[name]["cards"])
             return self.players[name]["cards"]
         except KeyError:
             raise KeyError(f"{name} is not being tracked.")

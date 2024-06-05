@@ -48,9 +48,10 @@ class PokerConsumer(AsyncWebsocketConsumer):
         await sync_to_async(play_game_instance.StartGame)()
     
     async def update_player_info(self, event):
-        player_info = event['player_info']
-        await self.send(text_data=json.dumps({
-            'type': 'update_player_info',
-            'player_info': player_info
-        }))
+        #player_info = event['player_info']
+        #await self.send(text_data=json.dumps({
+            #'type': 'update_player_info',
+            #'player_info': player_info
+        #}))
+        pass
 

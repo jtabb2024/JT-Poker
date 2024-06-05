@@ -43,8 +43,8 @@ class Dealer(object):
             if name in self.action.beings["humans"]:
                     hand = self.hands.Hand(name)
                     handimages = self.hands.HandImages(name)
-                    # self.mtracker.add_message(f"This is the DealHands Human player hand: {hand}")
-                    # self.mtracker.add_message(f"This is the DealHands Human player hand image names: {handimages}")
+                    self.mtracker.add_message(f"This is the DealHands Human player hand: {hand}")
+                    self.mtracker.add_message(f"This is the DealHands Human player hand image names: {handimages}")
                     self.mtracker.add_card_images(handimages)
         # initialise player statuses
         self.action.NewRound(names)
@@ -150,10 +150,10 @@ class Dealer(object):
             info[name]["chips"] = self.chips.players[name]
             if name in self.hands.players:
                 info[name]["hand"] = self.hands.players[name]
-                info[name]["hand"]["cards"] = [str(card) for card in info[name]["hand"]["cards"]]
+                #info[name]["hand"]["cards"] = [str(card) for card in info[name]["hand"]["cards"]] <--- this causes a major bug
             if name in self.action.players:
                 info[name]["status"] = self.action.players[name]
-            # info[name]["handimages"] = self.hands.HandImages(name)
+                info[name]["handimages"] = self.hands.HandImages(name)
         # log missing info
         if not self.action.players:
             print(f"[WARNING] Nobody has a status.")
