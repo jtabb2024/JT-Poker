@@ -42,7 +42,7 @@ class MessageTracker:
         return self.card_images
     
     def send_player_state(self, player_info):
-        self.broadcast_player_info(player_info)
+        self.broadcast_player_info(f"{player_info}")
 
     def clear_card_images(self):  # clear card images
         self.card_images.clear()

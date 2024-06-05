@@ -50,10 +50,9 @@ class PokerConsumer(AsyncWebsocketConsumer):
     async def update_player_info(self, event):
         #*************  the Hand part of Player info needs to be stringified before sending to the client
         #it should be stringified here or somewhere outside of playerinfo def to avoid bugs
-        #player_info = event['player_info']
-        #await self.send(text_data=json.dumps({
-            #'type': 'update_player_info',
-            #'player_info': player_info
-        #}))
-        pass
+        player_info = event['player_info']
+        await self.send(text_data=json.dumps({
+            'type': 'update_player_info',
+            'player_info': player_info
+        }))
 
