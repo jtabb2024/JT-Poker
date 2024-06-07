@@ -1,54 +1,54 @@
-* {
+*  body {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
     margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
-
-body, html {
-    height: 100%;
     overflow: hidden; /* Prevent scrolling */
 }
-
-.page-container {
-    display: grid;
-    grid-template-rows: auto 1fr;
-    height: 100vh;
+#game-form {
+    background-color: #f8f9fa;
+    padding: 15px;
+    display: flex;
+    justify-content: space-around;
 }
-
-.header {
-    background-color: #333;
-    color: white;
-    padding: 1em;
-    text-align: center;
+#header {
+    background-color: #f8f9fa;
+    border-bottom: 1px solid #dee2e6;
+    padding: 15px;
+    width: 100%;
 }
-
-.game-container {
-    display: grid;
-    grid-template-columns: 300px 1fr; /* Adjusted to ensure proper layout */
-    height: 100%;
+#header h1 {
+    margin: 0;
 }
-
-.left-bar {
+#main {
+    display: flex;
+    flex-grow: 1;
+    overflow: hidden; /* Prevent scrolling */
+}
+#messages {
     background-color: #f8f9fa;
     border-right: 1px solid #dee2e6;
     padding: 15px;
+    width: 300px;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    height: 100%;
+    height: 100%; /* Half the screen */
     max-height: 100vh; /* Limit height */
 }
-
-.LB-Messages {
+#messagedisplay {
     height: 60%; /* Fixed height */
     overflow-y: auto;
     font-family: 'Protest Strike', cursive;
     color: #00008B; /* Dark blue color */
     font-weight: bold; /* Make the font bold */
-    word-wrap: break-word;
 }
-
-.LB_Buttons {
+#messagedisplay div {
+    border-bottom: 1px solid #00008B; /* Add a bottom border to each message */
+    padding-bottom: 10px; /* Add some space below each message */
+    margin-bottom: 10px; /* Add some space below each message */
+}
+#LBbuttons {
     height: 40%; /* Fixed height */
     background-color: #f8f9fa;
     border-top: 1px solid #dee2e6;
@@ -57,100 +57,58 @@ body, html {
     justify-content: center; /* Center the buttons horizontally */
     align-items: center; /* Center the buttons vertically */
 }
-
-.play-button {
+#play-button {
     padding: 10px 20px; /* Add some padding */
     border-radius: 5px; /* Rounded edges */
     width: 100px; /* Fixed width */
     height: 40px; /* Fixed height */
-    display: flex;
+    display: inline-block; /* Ensure it does not stretch */
     justify-content: center; /* Center text horizontally */
     align-items: center; /* Center text vertically */
     text-align: center; /* Center text inside the button */
-    background-color: #007bff;
-    color: white;
+}
+#cards {
+    background-color: #008000; /* Darker green color */
+    padding: 15px;
+    overflow-y: scroll;
+    flex-grow: 1;
+    display: flex;
+    justify-content: center; /* Center the cards horizontally */
+    align-items: flex-end; /* Align cards towards the bottom */
+    gap: 10px; /* Space between cards */
+    padding-bottom: 50px; /* Space above the bottom of the cards element */
+    height: calc(100vh - 80px - 15px - 10%); /* Adjust for header, padding, and bottom bar */
+    width: 80%;
+    /* Background image will be set dynamically in the cards element */
+    background-size: 100% 100%; /* Ensure the image covers the entire container */
+    background-position: center; /* Center the image */
+    background-repeat: no-repeat; /* Do not repeat the image */
+}
+.card {
+    position: relative;
+    cursor: pointer;
+    background: none; /* Remove white box */
+    display: inline-block;
+    text-decoration: none; /* Remove lines under images */
+    padding: 0; /* Remove default padding */
+    border: none; /* Remove default border */
+    width: 100px; /* Match the width of the image */
+    height: auto; /* Make the div only as tall as the image */
+}
+.card.selected {
+    transform: translateY(-10px);
+}
+.card button {
+    display: block;
+    padding: 0;
     border: none;
+    background: none;
+    width: 100px;
+    height: auto;
     cursor: pointer;
 }
-
-.content {
-    display: grid;
-    grid-template-rows: auto 1fr auto;
-    position: relative;
-    background-color: #f4f4f4;
-    padding: 1em;
-    height: 100%;
-}
-
-.top-bots {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 1em;
-}
-
-.bot2 {
-    background-color: #ddd;
-    padding: 1em;
-    text-align: center;
-    height: 4em;
-    width: 100%;
-    max-width: 600px;
-    margin: 0 auto; /* Center horizontally */
-}
-
-.bot-container {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 1em;
-    width: 100%;
-}
-
-.bot1, .bot3 {
-    background-color: #ddd;
-    padding: 1em;
-    height: 4em;
-}
-
-.player {
-    background-color: #ccc;
-    padding: 1em;
-    text-align: center;
-    height: 18em;
-}
-
-.cards-container {
-    display: flex;
-    justify-content: center;
-    align-items: flex-start;
-    width: 100%;
-    position: absolute;
-    top: 0;
-    left: 50%;
-    transform: translateX(-50%);
-}
-
-.card {
-    margin: 0 5px;
-}
-
-.game-pot {
-    background-color: #bbb;
-    width: 300px;
-    height: 100px;
-    margin: auto; /* Center horizontally */
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-    grid-row: 2; /* Position in the middle */
-}
-
-@media (max-width: 768px) {
-    .game-container {
-        grid-template-columns: 150px 1fr;
-    }
-    .bot-container {
-        grid-template-columns: 1fr;
-    }
+.card img {
+    width: 100px;
+    height: auto;
+    display: block;
 }
