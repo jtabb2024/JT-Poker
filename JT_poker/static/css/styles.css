@@ -1,4 +1,4 @@
-*  body {
+body {
     display: flex;
     flex-direction: column;
     height: 100vh;
@@ -67,6 +67,20 @@
     align-items: center; /* Center text vertically */
     text-align: center; /* Center text inside the button */
 }
+
+#card-player {
+    position: relative;
+    cursor: pointer;
+    background: none; /* Remove white box */
+    display: inline-block;
+    text-decoration: none; /* Remove lines under images */
+    padding: 0; /* Remove default padding */
+    border: none; /* Remove default border */
+    width: 80px; /* Smaller width */
+    height: auto; /* Make the div only as tall as the image */
+    transition: transform 0.2s; /* Smooth transition for moving up */
+}
+
 #cards {
     background-color: #008000; /* Darker green color */
     padding: 15px;
@@ -77,14 +91,31 @@
     align-items: flex-end; /* Align cards towards the bottom */
     gap: 10px; /* Space between cards */
     padding-bottom: 50px; /* Space above the bottom of the cards element */
-    height: calc(100vh - 80px - 15px - 10%); /* Adjust for header, padding, and bottom bar */
-    width: 80%;
-    /* Background image will be set dynamically in the cards element */
+    height: calc(100vh - 80px - 15px - 10%);
+    width: 80%;/* Background image will be set dynamically in the cards element */
     background-size: 100% 100%; /* Ensure the image covers the entire container */
     background-position: center; /* Center the image */
     background-repeat: no-repeat; /* Do not repeat the image */
 }
-.card {
+
+.cards {
+    background-color: #008000; /* Darker green color */
+    padding: 15px;
+    overflow-y: scroll;
+    flex-grow: 1;
+    display: flex;
+    justify-content: center; /* Center the cards horizontally */
+    align-items: flex-end; /* Align cards towards the bottom */
+    gap: 10px; /* Space between cards */
+    padding-bottom: 50px; /* Space above the bottom of the cards element */
+    height: calc(100vh - 80px - 15px - 10%);
+    width: 80%;/* Background image will be set dynamically in the cards element */
+    background-size: 100% 100%; /* Ensure the image covers the entire container */
+    background-position: center; /* Center the image */
+    background-repeat: no-repeat; /* Do not repeat the image */
+}
+
+.card-player {
     position: relative;
     cursor: pointer;
     background: none; /* Remove white box */
@@ -92,23 +123,24 @@
     text-decoration: none; /* Remove lines under images */
     padding: 0; /* Remove default padding */
     border: none; /* Remove default border */
-    width: 100px; /* Match the width of the image */
+    width: 80px; /* Smaller width */
     height: auto; /* Make the div only as tall as the image */
+    transition: transform 0.2s; /* Smooth transition for moving up */
 }
-.card.selected {
+.card-player.selected {
     transform: translateY(-10px);
 }
-.card button {
+.card-player button {
     display: block;
     padding: 0;
     border: none;
     background: none;
-    width: 100px;
+    width: 80px; /* Smaller width */
     height: auto;
     cursor: pointer;
 }
-.card img {
-    width: 100px;
+.card-player img {
+    width: 80px; /* Smaller width */
     height: auto;
     display: block;
 }

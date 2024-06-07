@@ -7,13 +7,128 @@
     <title>Welcome to the Game</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Protest+Strike&display=swap" />
-    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+            margin: 0;
+            overflow: hidden; /* Prevent scrolling */
+        }
+        #game-form {
+            background-color: #f8f9fa;
+            padding: 15px;
+            display: flex;
+            justify-content: space-around;
+        }
+        #header {
+            background-color: #f8f9fa;
+            border-bottom: 1px solid #dee2e6;
+            padding: 15px;
+            width: 100%;
+        }
+        #header h1 {
+            margin: 0;
+        }
+        #main {
+            display: flex;
+            flex-grow: 1;
+            overflow: hidden; /* Prevent scrolling */
+        }
+        #messages {
+            background-color: #f8f9fa;
+            border-right: 1px solid #dee2e6;
+            padding: 15px;
+            width: 300px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            height: 100%; /* Half the screen */
+            max-height: 100vh; /* Limit height */
+        }
+        #messagedisplay {
+            height: 60%; /* Fixed height */
+            overflow-y: auto;
+            font-family: 'Protest Strike', cursive;
+            color: #00008B; /* Dark blue color */
+            font-weight: bold; /* Make the font bold */
+        }
+        #messagedisplay div {
+            border-bottom: 1px solid #00008B; /* Add a bottom border to each message */
+            padding-bottom: 10px; /* Add some space below each message */
+            margin-bottom: 10px; /* Add some space below each message */
+        }
+        #LBbuttons {
+            height: 40%; /* Fixed height */
+            background-color: #f8f9fa;
+            border-top: 1px solid #dee2e6;
+            padding: 15px;
+            display: flex;
+            justify-content: center; /* Center the buttons horizontally */
+            align-items: center; /* Center the buttons vertically */
+        }
+        #play-button {
+            padding: 10px 20px; /* Add some padding */
+            border-radius: 5px; /* Rounded edges */
+            width: 100px; /* Fixed width */
+            height: 40px; /* Fixed height */
+            display: inline-block; /* Ensure it does not stretch */
+            justify-content: center; /* Center text horizontally */
+            align-items: center; /* Center text vertically */
+            text-align: center; /* Center text inside the button */
+        }
+        #cards {
+            background-color: #008000; /* Darker green color */
+            padding: 15px;
+            overflow-y: scroll;
+            flex-grow: 1;
+            display: flex;
+            justify-content: center; /* Center the cards horizontally */
+            align-items: flex-end; /* Align cards towards the bottom */
+            gap: 10px; /* Space between cards */
+            padding-bottom: 50px; /* Space above the bottom of the cards element */
+            height: calc(100vh - 80px - 15px - 10%); /* Adjust for header, padding, and bottom bar */
+            width: 80%;
+            /* Background image will be set dynamically in the cards element */
+            background-size: 100% 100%; /* Ensure the image covers the entire container */
+            background-position: center; /* Center the image */
+            background-repeat: no-repeat; /* Do not repeat the image */
+        }
+        .card {
+            position: relative;
+            cursor: pointer;
+            background: none; /* Remove white box */
+            display: inline-block;
+            text-decoration: none; /* Remove lines under images */
+            padding: 0; /* Remove default padding */
+            border: none; /* Remove default border */
+            width: 100px; /* Match the width of the image */
+            height: auto; /* Make the div only as tall as the image */
+        }
+        .card.selected {
+            transform: translateY(-10px);
+        }
+        .card button {
+            display: block;
+            padding: 0;
+            border: none;
+            background: none;
+            width: 100px;
+            height: auto;
+            cursor: pointer;
+        }
+        .card img {
+            width: 100px;
+            height: auto;
+            display: block;
+        }
+    </style>
 </head>
 <body>
     <div id="header">
         <h1>Welcome to the Game</h1>
     </div>
-    <!--<pre id="playerInfo"></pre>-->
+    <pre id="playerInfo"></pre>
     <div id="main">
         <div id="messages">
             <div id="messagedisplay">
@@ -27,8 +142,189 @@
         <div id="cards">
             <!-- Card images will be appended here dynamically -->
         </div>
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                const staticUrl = '{% static "images/tables/" %}'; 
+                const tableImage = 'pokertable1.png'; 
+                const cardsElement = document.getElementById('cards');
+                cardsElement.style.backgroundImage = `url('${staticUrl + tableImage}')`;
+            });
+        </script>
     </div>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
-    <script src="{% static 'js/scripts.js' %}"></script> <!-- Link to your JavaScript file -->
+
+{% load static %}
+<script>
+    var staticUrl = "{% static 'images/cards/Deck1/' %}";
+</script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
+<script>
+    const wsUrl = 'ws://' + window.location.host + '/ws/playPoker/';
+    const chatSocket = new WebSocket(wsUrl);
+    let displayedMessages = [];
+    let displayedCardImages = [];
+
+    chatSocket.onmessage = function(e) {
+        const data = JSON.parse(e.data);
+        if (data.type === 'update_player_info') {
+            const playerInfoContainer = document.getElementById('playerInfo');
+            playerInfoContainer.textContent = JSON.stringify(data.player_info, null, 2);
+        } else if (data.type === 'update_messages') {
+            const messagesContainer = document.getElementById('messagedisplay');
+            messagesContainer.innerHTML = ''; // Clear previous messages
+            const messages = data.messages.slice(-20); // Only take the last 20 messages
+            messages.forEach(message => {
+                const messageDiv = document.createElement('div');
+                messageDiv.textContent = message;
+                messagesContainer.appendChild(messageDiv);
+                messagesContainer.scrollTop = messagesContainer.scrollHeight;
+            });
+            displayedMessages = messages;
+        } else if (data.type === 'update_card_images') {
+            const cardsContainer = document.getElementById('cards');
+            cardsContainer.innerHTML = ''; // Clear previous card images
+            data.card_images.forEach((card, index) => {
+                const cardDiv = document.createElement('div');
+                cardDiv.className = 'card';
+                cardDiv.dataset.selected = '0';
+                cardDiv.dataset.order = index;
+                cardDiv.dataset.originalOrder = index;
+                console.log('Card:', card, 'Original Order:', cardDiv.dataset.originalOrder, 'selected:', cardDiv.dataset.selected);
+
+                const button = document.createElement('button');
+                const img = document.createElement('img');
+                img.src = staticUrl + card.trim();
+                img.draggable = true;
+                button.appendChild(img);
+                cardDiv.appendChild(button);
+
+                button.addEventListener('click', function() {
+                    cardDiv.classList.toggle('selected');
+                    cardDiv.dataset.selected = cardDiv.classList.contains('selected') ? '1' : '0';
+                    console.log(generateDiscardString()); // Debug: Log the discard string
+                });
+
+                img.addEventListener('dragstart', function(event) {
+                    event.dataTransfer.setData('text/plain', cardDiv.dataset.order);
+                });
+
+                img.addEventListener('touchstart', function(event) {
+                    touchStartX = event.touches[0].clientX;
+                    touchStartY = event.touches[0].clientY;
+                    draggedElement = cardDiv;
+                    event.dataTransfer = {}; // Simulate dataTransfer for touch
+                    event.dataTransfer.setData = function(type, val) {
+                        this[type] = val;
+                    };
+                    event.dataTransfer.getData = function(type) {
+                        return this[type];
+                    };
+                    event.dataTransfer.setData('text/plain', cardDiv.dataset.order);
+                });
+
+                cardsContainer.addEventListener('dragover', function(event) {
+                    event.preventDefault();
+                });
+
+                cardsContainer.addEventListener('touchmove', function(event) {
+                    event.preventDefault();
+                    const touch = event.touches[0];
+                    const targetElement = document.elementFromPoint(touch.clientX, touch.clientY);
+                    const targetCard = targetElement.closest('.card');
+                    if (targetCard && draggedElement) {
+                        const sourceOrder = draggedElement.dataset.order;
+                        const targetOrder = targetCard.dataset.order;
+                        const sourceCard = document.querySelector(`.card[data-order="${sourceOrder}"]`);
+                        const targetCardElement = document.querySelector(`.card[data-order="${targetOrder}"]`);
+
+                        if (sourceCard !== targetCardElement) {
+                            const sourceParent = sourceCard.parentNode;
+                            const targetParent = targetCardElement.parentNode;
+
+                            const sourceNext = sourceCard.nextSibling === targetCardElement ? sourceCard : sourceCard.nextSibling;
+                            targetParent.insertBefore(sourceCard, targetCardElement);
+                            sourceParent.insertBefore(targetCardElement, sourceNext);
+                        }
+                    }
+                });
+
+                cardDiv.addEventListener('drop', function(event) {
+                    event.preventDefault();
+                    const sourceOrder = event.dataTransfer.getData('text/plain');
+                    const targetOrder = this.dataset.order;
+                    const sourceCard = document.querySelector(`.card[data-order="${sourceOrder}"]`);
+                    const targetCard = document.querySelector(`.card[data-order="${targetOrder}"]`);
+
+                    if (sourceCard !== targetCard) {
+                        const sourceParent = sourceCard.parentNode;
+                        const targetParent = targetCard.parentNode;
+
+                        const sourceNext = sourceCard.nextSibling === targetCard ? sourceCard : sourceCard.nextSibling;
+                        targetParent.insertBefore(sourceCard, targetCard);
+                        sourceParent.insertBefore(targetCard, sourceNext);
+                    }
+                });
+
+                cardDiv.addEventListener('touchend', function(event) {
+                    if (draggedElement) {
+                        const touch = event.changedTouches[0];
+                        const targetElement = document.elementFromPoint(touch.clientX, touch.clientY);
+                        const targetCard = targetElement.closest('.card');
+                        if (targetCard) {
+                            const sourceOrder = draggedElement.dataset.order;
+                            const targetOrder = targetCard.dataset.order;
+                            const sourceCard = document.querySelector(`.card[data-order="${sourceOrder}"]`);
+                            const targetCardElement = document.querySelector(`.card[data-order="${targetOrder}"]`);
+
+                            if (sourceCard !== targetCardElement) {
+                                const sourceParent = sourceCard.parentNode;
+                                const targetParent = targetCardElement.parentNode;
+
+                                const sourceNext = sourceCard.nextSibling === targetCardElement ? sourceCard : sourceCard.nextSibling;
+                                targetParent.insertBefore(sourceCard, targetCardElement);
+                                sourceParent.insertBefore(targetCardElement, sourceNext);
+                            }
+                        }
+                        draggedElement = null;
+                    }
+                });
+
+                cardsContainer.appendChild(cardDiv);
+            });
+            displayedCardImages = data.card_images;
+        } else if (data.type === 'game_started') {
+            alert(data.message);
+        }
+    };
+
+    chatSocket.onclose = function(e) {
+        console.error('Chat socket closed unexpectedly');
+    };
+
+    function generateDiscardString() {
+        let discardString = '';
+        const cards = document.querySelectorAll('.card');
+        cards.forEach(card => {
+            discardString += card.dataset.selected;
+        });
+        return discardString;
+    }
+
+    document.getElementById('play-button').addEventListener('click', function() {
+        chatSocket.send(JSON.stringify({
+            'type': 'start_game'
+        }));
+    });
+
+    document.getElementById('play-button').addEventListener('touchstart', function() {
+        chatSocket.send(JSON.stringify({
+            'type': 'start_game'
+        }));
+    });
+
+    function disableButtons() {
+        const playButton = document.querySelector('button[name="play"]');
+        playButton.disabled = true;
+    }
+</script>
 </body>
 </html>
