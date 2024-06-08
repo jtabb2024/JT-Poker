@@ -1,3 +1,6 @@
+html, body {
+    overflow: hidden;
+  }
 #page-container {
     display: grid;
     grid-template-rows: auto 1fr;
@@ -61,12 +64,18 @@
     cursor: pointer;
 }
 #pokertable {
+    background-color: #008000; /* Darker green color */
     display: grid;
     grid-template-rows: auto 1fr auto;
     position: relative;
-    background-color: #f4f4f4;
     padding: 1em;
+    /*height: calc(100vh - 10%); /* Adjust for header*/
     height: 100%;
+    width: 80%;
+    /* Background image will be set dynamically in table element */
+    background-size: 100% 100%; /* Ensure the image covers the entire container */
+    background-position: center; /* Center the image */
+    background-repeat: no-repeat; /* Do not repeat the image */
 }
 .top-bots {
     display: flex;
@@ -95,37 +104,20 @@
     height: 4em;
 }
 .player {
-    background-color: #ccc;
     padding: 1em;
+    overflow: hidden;
     text-align: center;
     height: 18em;
 }
 #cards-container {
-    background-color: #008000; /* Darker green color */
     padding: 15px;
-    overflow-y: scroll;
+    overflow: hidden;
     flex-grow: 1;
     display: flex;
     justify-content: center; /* Center the cards horizontally */
     align-items: flex-end; /* Align cards towards the bottom */
     gap: 10px; /* Space between cards */
     padding-bottom: 50px; /* Space above the bottom of the cards element */
-    height: calc(100vh - 80px - 15px - 10%); /* Adjust for header, padding, and bottom bar */
-    width: 80%;
-    /* Background image will be set dynamically in the cards element */
-    background-size: 100% 100%; /* Ensure the image covers the entire container */
-    background-position: center; /* Center the image */
-    background-repeat: no-repeat; /* Do not repeat the image */
-}
-.cards-container-old {
-    display: flex;
-    justify-content: center;
-    align-items: flex-start;
-    width: 100%;
-    position: absolute;
-    top: 0;
-    left: 50%;
-    transform: translateX(-50%);
 }
 .card {
     position: relative;
