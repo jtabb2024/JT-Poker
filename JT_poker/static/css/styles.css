@@ -1,6 +1,10 @@
 html, body {
     overflow: hidden;
-  }
+    margin: 0; /* Add this to remove default margins */
+    padding: 0; /* Add this to remove default padding */
+    height: 100%; /* Add this to ensure the body takes the full height */
+    width: 100%; /* Add this to ensure the body takes the full width */
+}
 #page-container {
     display: grid;
     grid-template-rows: auto 1fr;
@@ -71,7 +75,7 @@ html, body {
     padding: 1em;
     /*height: calc(100vh - 10%); /* Adjust for header*/
     height: 100%;
-    width: 80%;
+    width: 100%;
     /* Background image will be set dynamically in table element */
     background-size: 100% 100%; /* Ensure the image covers the entire container */
     background-position: center; /* Center the image */
