@@ -34,6 +34,13 @@ class PokerConsumer(AsyncWebsocketConsumer):
             'type': 'update_messages',
             'messages': messages
         }))
+        
+    async def update_lb_message(self, event):
+        message = event['message']
+        await self.send(text_data=json.dumps({
+            'type': 'update_lb_message',
+            'message': message
+        }))
 
     async def update_card_images(self, event):
         card_images = event['card_images']

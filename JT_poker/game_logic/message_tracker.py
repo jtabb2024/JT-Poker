@@ -21,13 +21,19 @@ class MessageTracker:
         if cls._instance is None:
             cls._instance = cls()
         return cls._instance
-
-    def add_message(self, message):
+    
+    def lb_message(self, message):
         self.messages.append(message)
         self.broadcast_messages()
 
+    def add_message(self, message):
+        #self.messages.append(message)
+        #self.broadcast_messages()
+        pass
+
     def get_messages(self):
-        return self.messages
+        pass
+        # return self.messages
 
     def clear_messages(self):
         self.messages.clear()
@@ -47,17 +53,6 @@ class MessageTracker:
     def clear_card_images(self):  # clear card images
         self.card_images.clear()
         self.broadcast_card_images()
-    
-    def broadcast_player_info(self, player_info):
-        # Game State that will be sent to the poker game window (player info, player actions, etc.
-        channel_layer = get_channel_layer()
-        async_to_sync(channel_layer.group_send)(
-        'poker_group',  # Group name
-        {
-            'type': 'update_player_info',
-            'player_info': player_info,
-        }
-    )
         
     def send_tableview(self, table_view):
         # Game State that will be sent to the poker game window (table view, etc.)
@@ -65,7 +60,8 @@ class MessageTracker:
         
     def send_lb_message(self, lb_message):
         # Messages that will be sent to the left bar in the poker game window
-        pass
+        self.messages.append(lb_message)
+        self.broadcast_lb_message(lb_message)
         
     def send_pot(self, pot_amount):
         # Int representing the amount of chips in the pot for the poker game window
@@ -137,7 +133,17 @@ class MessageTracker:
             'poker_group',  # Group name
             {
                 'type': 'update_messages',
-                'messages': self.get_messages(),
+                'message': self.get_messages(),
+            }
+        )
+        
+    def broadcast_lb_message(self, lb_message):
+        channel_layer = get_channel_layer()
+        async_to_sync(channel_layer.group_send)(
+            'poker_group',  # Group name
+            {
+                'type': 'update_lb_message',
+                'message': lb_message,
             }
         )
 
@@ -150,3 +156,14 @@ class MessageTracker:
                 'card_images': self.get_card_images(),
             }
         )
+        
+    def broadcast_player_info(self, player_info):
+        # Game State that will be sent to the poker game window (player info, player actions, etc.
+        channel_layer = get_channel_layer()
+        async_to_sync(channel_layer.group_send)(
+        'poker_group',  # Group name
+        {
+            'type': 'update_player_info',
+            'player_info': player_info,
+        }
+    )
