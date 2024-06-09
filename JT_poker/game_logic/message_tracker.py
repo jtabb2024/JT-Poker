@@ -1,3 +1,4 @@
+import time
 from channels.layers import get_channel_layer
 from asgiref.sync import async_to_sync
 
@@ -61,6 +62,8 @@ class MessageTracker:
     def send_lb_message(self, lb_message):
         # Messages that will be sent to the left bar in the poker game window
         self.messages.append(lb_message)
+        # Wait for 5 seconds this is just a test and should be moved elsewhere and time import should be removed
+        time.sleep(2)
         self.broadcast_lb_message(lb_message)
         
     def send_pot(self, pot_amount):

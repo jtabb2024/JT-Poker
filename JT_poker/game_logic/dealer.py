@@ -24,11 +24,13 @@ class Dealer(object):
         player = self.seats.button["player"]
         print(f"[BUTTON] The button was given to {player}.") # remove this when ready and all other print statements
         self.mtracker.add_message(f"The button was given to {player}.")
+        self.mtracker.send_lb_message(f"The button was given to {player}.")
 
     def ShuffleDeck(self):
         self.hands.ShuffleDeck()
         print(f"[CARDS] The deck has been shuffled.")
         self.mtracker.add_message(f"The deck has been shuffled.")
+        self.mtracker.send_lb_message(f"The deck has been shuffled.")
         
     def DealHands(self):
         # determine players in the round and begin tracking
@@ -39,12 +41,15 @@ class Dealer(object):
         self.hands.EvaluatePlayersIn()
         print(f"[HANDS] Hands have been dealt.")
         self.mtracker.add_message(f"Cards have been dealt.")
+        self.mtracker.send_lb_message(f"Cards have been dealt.")
         for name in names:
             if name in self.action.beings["humans"]:
                     hand = self.hands.Hand(name)
                     handimages = self.hands.HandImages(name)
                     self.mtracker.add_message(f"This is the DealHands Human player hand: {hand}")
+                    self.mtracker.send_lb_message(f"This is the DealHands Human player hand: {hand}")
                     self.mtracker.add_message(f"This is the DealHands Human player hand image names: {handimages}")
+                    self.mtracker.send_lb_message(f"This is the DealHands Human player hand image names: {handimages}")
                     self.mtracker.add_card_images(handimages)
         # initialise player statuses
         self.action.NewRound(names)
