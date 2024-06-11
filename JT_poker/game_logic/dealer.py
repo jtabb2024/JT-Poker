@@ -50,8 +50,9 @@ class Dealer(object):
         self.action.NewRound(names)
         # debug info below only
         print("Player Info: ", self.PlayerInfo())
-        self.mtracker.send_lb_message("DealHands")
-        self.mtracker.send_player_state(self.PlayerInfo())
+        # This is where you can actually send all of the player info to the UI and update all items - need to add this logic
+        self.mtracker.send_lb_message("DealHands", self.PlayerInfo())
+        # self.mtracker.send_player_state(self.PlayerInfo())
         for name in names:
             TableInfo = self.TableView(name)
             print("Table Info: ", TableInfo)

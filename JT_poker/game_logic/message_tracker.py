@@ -96,9 +96,11 @@ class MessageTracker:
             }
         )
         
-    def send_lb_message(self, lb_message):
+    def send_lb_message(self, lb_message, player_info=None):
         # Wait for 5 seconds this is just a test and should be moved elsewhere and time import should be removed
         time.sleep(2)
+        if player_info:
+            self.send_player_state("Update State:", player_info)
         self.broadcast_lb_message(lb_message)
         
     def broadcast_lb_message(self, lb_message):
@@ -135,9 +137,9 @@ class MessageTracker:
         
     def send_player_state(self, player_info):
         for player_name, player_data in player_info.items():
-            self.send_lb_message(f"Processing data for {player_name}")
-            print(f"Processing data for {player_name}")
-            print(player_info)
+            #self.send_lb_message(f"Processing data for {player_name}")
+            #print(f"Processing data for {player_name}")
+            #print(player_info)
             seat = player_data['seat']
             stack = player_data['chips']['stack']
             contribution = player_data['chips']['contribution']
