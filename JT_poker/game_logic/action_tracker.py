@@ -61,16 +61,15 @@ class ActionTracker(object):
         # determine species and get a bet amount request
         if name in self.beings["humans"]:
             print(f"[INFO] Your cards are {info['self']['hand']['cards']}")
-            self.mtracker.add_message(f"{name}: Your cards are {info['self']['hand']['cards']}")
             self.mtracker.send_lb_message(f"{name}: Your cards are {info['self']['hand']['cards']}")
             print(f"[INFO] There are {info['game']['pot']} chips in the pot.")
-            self.mtracker.add_message(f"There are {info['game']['pot']} chips in the pot.")
+            self.mtracker.send_lb_message(f"There are {info['game']['pot']} chips in the pot.")
             print(f"[INFO] You have {info['self']['chips']['stack']} chips remaining.")
-            self.mtracker.add_message(f"You have {info['self']['chips']['stack']} chips remaining.")
+            self.mtracker.send_lb_message(f"You have {info['self']['chips']['stack']} chips remaining.")
             print(f"[INFO] The amount to call is {info['game']['call']} chips.")
-            self.mtracker.add_message(f"The amount to call is {info['game']['call']} chips.")
+            self.mtracker.send_lb_message(f"The amount to call is {info['game']['call']} chips.")
             amount = int(input("How much would you like to put in the pot?"))
-            self.mtracker.add_message("How much would you like to put in the pot?")
+            self.mtracker.send_lb_message("How much would you like to put in the pot?")
         else:
             amount = choice([0, info['self']['chips']['stack'], info['game']['call'], info['game']['pot'], 2*info['game']['pot'], 2*info['game']['call']])
         return amount
@@ -80,10 +79,10 @@ class ActionTracker(object):
         if name in self.beings["humans"]:
             # give info and get user input from human
             print(f"[INFO] Your cards are {info['self']['hand']['cards']}")
-            self.mtracker.add_message(f"{name}: Your cards are {info['self']['hand']['cards']}")
+            self.mtracker.send_lb_message(f"{name}: Your cards are {info['self']['hand']['cards']}")
             mask = input("Which cards would you like to swap? (00000 for none, 11111 for all)")
             discards =  [info['self']['hand']['cards'][i] for i, v in enumerate(mask) if int(v)]
-            self.mtracker.add_message(f"{name}: You discarded {discards}")
+            self.mtracker.send_lb_message(f"{name}: You discarded {discards}")
         else:
             # get random input from bots
             discards = [info['self']['hand']['cards'][i] for i in range(5) if choice([True,False])]

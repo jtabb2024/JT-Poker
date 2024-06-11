@@ -31,7 +31,7 @@ class PlayGame(object):
         while self.NewHand():
             self.BettingPhase("preflop")
             if self.dealer.action.beings["humans"] == [self.HUMAN]:
-                self.mtracker.add_message(f"Bet has been placed by Human")
+                self.mtracker.send_lb_message(f"Bet has been placed by Human")
                 self.print_playerinfo(self.dealer.PlayerInfo())
             self.SwitchingPhase()
             self.BettingPhase("postflop")
@@ -46,7 +46,7 @@ class PlayGame(object):
         # check human has chips
         if not self.dealer.chips.players[self.HUMAN]["stack"]:
             print(f"[END] Game over {self.HUMAN}, better luck next time.")
-            self.mtracker.add_message(f"[END] Game over {self.HUMAN}, better luck next time.")
+            self.mtracker.send_lb_message(f"[END] Game over {self.HUMAN}, better luck next time.")
             return False
 
         # kick bots with few chips
@@ -55,12 +55,12 @@ class PlayGame(object):
         # check amount of players remaining
         if len(self.dealer.TrackedPlayers()) < 2:
             print(f"[END] {self.HUMAN} has won!")
-            self.mtracker.add_message(f"[END] {self.HUMAN} has won!")
+            self.mtracker.send_lb_message(f"[END] {self.HUMAN} has won!")
             return False
 
         # begin new round
         print(f"\n[NEW ROUND]")
-        self.mtracker.add_message(f"\n[NEW ROUND]")
+        self.mtracker.send_lb_message(f"\n[NEW ROUND]")
         self.dealer.ShuffleDeck()
         self.dealer.MoveButton()
         self.dealer.TakeAnte()
@@ -119,7 +119,7 @@ class PlayGame(object):
                     if name == self.HUMAN and discards:
                         print(f"[CARDS] Your new hand is {self.dealer.hands.players[name]['cards']}")
                         # still need to send cards to mtracker and refresh the html page with new cards
-                        self.mtracker.add_message(f"Your new hand is {self.dealer.hands.players[name]['cards']}")
+                        self.mtracker.send_lb_message(f"Your new hand is {self.dealer.hands.players[name]['cards']}")
                     break
         return True
 
@@ -131,7 +131,7 @@ class PlayGame(object):
     
     def EndGame(self):
         print("[END] Thanks for playing!")
-        self.mtracker.add_message("[END] Thanks for playing!")
+        self.mtracker.send_lb_message("[END] Thanks for playing!")
 
 #if __name__ == "__main__":
     # This runs if the file is executed directly only

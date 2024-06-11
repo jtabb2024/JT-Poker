@@ -13,7 +13,6 @@ class MessageTracker:
 
     def __init__(self):
         if not self._initialized:
-            self.messages = []
             self.card_images = []  # initialize card images list
             self._initialized = True
 
@@ -22,49 +21,10 @@ class MessageTracker:
         if cls._instance is None:
             cls._instance = cls()
         return cls._instance
-    
-    def lb_message(self, message):
-        self.messages.append(message)
-        self.broadcast_messages()
-
-    def add_message(self, message):
-        #self.messages.append(message)
-        #self.broadcast_messages()
-        pass
-
-    def get_messages(self):
-        pass
-        # return self.messages
-
-    def clear_messages(self):
-        self.messages.clear()
-        self.broadcast_messages()
-
-    def add_card_images(self, images):  # add card images
-        print('************Adding card images:', images)  # Log the images being added
-        self.card_images.extend(images)
-        self.broadcast_card_images()
-
-    def get_card_images(self):
-        return self.card_images
-    
-    def send_player_state(self, player_info):
-        self.broadcast_player_info(f"{player_info}")
-
-    def clear_card_images(self):  # clear card images
-        self.card_images.clear()
-        self.broadcast_card_images()
         
     def send_tableview(self, table_view):
         # Game State that will be sent to the poker game window (table view, etc.)
         pass
-        
-    def send_lb_message(self, lb_message):
-        # Messages that will be sent to the left bar in the poker game window
-        self.messages.append(lb_message)
-        # Wait for 5 seconds this is just a test and should be moved elsewhere and time import should be removed
-        time.sleep(2)
-        self.broadcast_lb_message(lb_message)
         
     def send_pot(self, pot_amount):
         # Int representing the amount of chips in the pot for the poker game window
@@ -125,10 +85,6 @@ class MessageTracker:
     def send_player_discard(self, name, player_discard):
         # List of strings representing the cards the player has discarded for the poker game window
         pass
-        
-    def send_player_showdown(self, name, player_showdown):
-        # Boolean representing if the player is in the showdown for the poker game window 
-        pass
 
     def broadcast_messages(self):
         channel_layer = get_channel_layer()
@@ -140,6 +96,11 @@ class MessageTracker:
             }
         )
         
+    def send_lb_message(self, lb_message):
+        # Wait for 5 seconds this is just a test and should be moved elsewhere and time import should be removed
+        time.sleep(2)
+        self.broadcast_lb_message(lb_message)
+        
     def broadcast_lb_message(self, lb_message):
         channel_layer = get_channel_layer()
         async_to_sync(channel_layer.group_send)(
@@ -150,6 +111,18 @@ class MessageTracker:
             }
         )
 
+    def add_card_images(self, images):  # add card images
+        print('************Adding card images:', images)  # Log the images being added
+        self.card_images.extend(images)
+        self.broadcast_card_images()
+
+    def get_card_images(self):
+        return self.card_images
+
+    def clear_card_images(self):  # clear card images
+        self.card_images.clear()
+        self.broadcast_card_images()
+
     def broadcast_card_images(self):
         channel_layer = get_channel_layer()
         async_to_sync(channel_layer.group_send)(
@@ -159,6 +132,35 @@ class MessageTracker:
                 'card_images': self.get_card_images(),
             }
         )
+        
+    def send_player_state(self, player_info):
+        for player_name, player_data in player_info.items():
+            self.send_lb_message(f"Processing data for {player_name}")
+            print(f"Processing data for {player_name}")
+            print(player_info)
+            seat = player_data['seat']
+            stack = player_data['chips']['stack']
+            contribution = player_data['chips']['contribution']
+            # Need to check if each dictionary item exists before trying to access it
+            # cards = player_data['hand']['cards']
+            # card_images = player_data['hand']['card_images']
+            # rank_n = player_data['hand']['rank_n']
+            # rank_c = player_data['hand']['rank_c']
+            # status = player_data['status']
+            # handimages = player_data['handimages']
+
+            # Now you can use these variables as needed
+            # For example, print them out
+            self.send_lb_message(f"Seat: {seat}")
+            self.send_lb_message(f"Stack: {stack}")
+            self.send_lb_message(f"Contribution: {contribution}")
+            # self.send_lb_message(f"Cards: {cards}")
+            # self.send_lb_message(f"Card Images: {card_images}")
+            # self.send_lb_message(f"Rank N: {rank_n}")
+            # self.send_lb_message(f"Rank C: {rank_c}")
+            # self.send_lb_message(f"Status: {status}")
+            # self.send_lb_message(f"Hand Images: {handimages}")
+        self.broadcast_player_info(f"{player_info}")
         
     def broadcast_player_info(self, player_info):
         # Game State that will be sent to the poker game window (player info, player actions, etc.
