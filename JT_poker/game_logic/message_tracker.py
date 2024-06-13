@@ -97,10 +97,10 @@ class MessageTracker:
         )
         
     def send_lb_message(self, lb_message, player_info=None):
-        # Wait for 5 seconds this is just a test and should be moved elsewhere and time import should be removed
-        time.sleep(2)
-        if player_info:
-            self.send_player_state("Update State:", player_info)
+        # Wait for x seconds this is just a test and should be moved elsewhere and time import should be removed
+        #time.sleep(1)
+        #if player_info:
+            #self.send_player_state("Update State:", player_info)
         self.broadcast_lb_message(lb_message)
         
     def broadcast_lb_message(self, lb_message):
@@ -137,32 +137,30 @@ class MessageTracker:
         
     def send_player_state(self, player_info):
         for player_name, player_data in player_info.items():
-            #self.send_lb_message(f"Processing data for {player_name}")
-            #print(f"Processing data for {player_name}")
-            #print(player_info)
-            seat = player_data['seat']
-            stack = player_data['chips']['stack']
-            contribution = player_data['chips']['contribution']
-            # Need to check if each dictionary item exists before trying to access it
-            # cards = player_data['hand']['cards']
-            # card_images = player_data['hand']['card_images']
-            # rank_n = player_data['hand']['rank_n']
-            # rank_c = player_data['hand']['rank_c']
-            # status = player_data['status']
-            # handimages = player_data['handimages']
-
-            # Now you can use these variables as needed
-            # For example, print them out
-            self.send_lb_message(f"Seat: {seat}")
-            self.send_lb_message(f"Stack: {stack}")
-            self.send_lb_message(f"Contribution: {contribution}")
-            # self.send_lb_message(f"Cards: {cards}")
-            # self.send_lb_message(f"Card Images: {card_images}")
-            # self.send_lb_message(f"Rank N: {rank_n}")
-            # self.send_lb_message(f"Rank C: {rank_c}")
-            # self.send_lb_message(f"Status: {status}")
-            # self.send_lb_message(f"Hand Images: {handimages}")
-        self.broadcast_player_info(f"{player_info}")
+            #if player_name == name:
+                self.send_lb_message(f"Processing data for {player_name}")
+                #print(f"Processing data for {player_name}")
+                #print(player_info)
+                seat = player_data['seat']
+                stack = player_data['chips']['stack']
+                contribution = player_data['chips']['contribution']
+                # Need to check if each dictionary item exists before trying to access it
+                # cards = player_data['hand']['cards']
+                # card_images = player_data['hand']['card_images']
+                # rank_n = player_data['hand']['rank_n']
+                # rank_c = player_data['hand']['rank_c']
+                # status = player_data['status']
+                # handimages = player_data['handimages']
+                self.send_lb_message(f"Seat: {seat}")
+                self.send_lb_message(f"Stack: {stack}")
+                self.send_lb_message(f"Contribution: {contribution}")
+                # self.send_lb_message(f"Cards: {cards}")
+                # self.send_lb_message(f"Card Images: {card_images}")
+                # self.send_lb_message(f"Rank N: {rank_n}")
+                # self.send_lb_message(f"Rank C: {rank_c}")
+                # self.send_lb_message(f"Status: {status}")
+                # self.send_lb_message(f"Hand Images: {handimages}")
+                #self.broadcast_player_info(f"{player_info}")
         
     def broadcast_player_info(self, player_info):
         # Game State that will be sent to the poker game window (player info, player actions, etc.

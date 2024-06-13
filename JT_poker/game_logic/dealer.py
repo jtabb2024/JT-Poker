@@ -156,7 +156,7 @@ class Dealer(object):
                 #info[name]["hand"]["cards"] = [str(card) for card in info[name]["hand"]["cards"]] <--- this causes a major bug
             if name in self.action.players:
                 info[name]["status"] = self.action.players[name]
-                info[name]["handimages"] = self.hands.HandImages(name)
+                #info[name]["handimages"] = self.hands.HandImages(name)
         # log missing info
         if not self.action.players:
             print(f"[WARNING] Nobody has a status.")
@@ -176,6 +176,7 @@ class Dealer(object):
                 info["self"]["chips"] = self.chips.players[name]
                 info["self"]["status"] = self.action.players[name]
                 info["self"]["hand"] = self.hands.players[name]
+                #info["self"]["handimages"] = self.hands.HandImages(name)
                 if name in self.action.beings["humans"]:
                     # Get the 'hand' part of the info dictionary for the viewer
                     viewer_hand = info["self"].get("hand", [])
@@ -187,11 +188,13 @@ class Dealer(object):
                 info["others"][name]["seat"] = self.seats.players[name]
                 info["others"][name]["chips"] = self.chips.players[name]
                 info["others"][name]["status"] = self.action.players[name]
-                info["others"][name]["hand"] = []
+                #info["others"][name]["hand"] = []
+                info["others"][name]["hand"] = self.hands.players[name]
+                #info["others"][name]["handimages"] = self.hands.HandImages(name)
         # add info game circumstances
         info["game"]["call"] = self.chips.CallAmount(viewer)
         info["game"]["pot"] = self.chips.PotAmount()
-        print("Game Info:", info["game"])
+        print("**********TableView**************:", info)
         return info
 
     def KickPlayers(self, names):

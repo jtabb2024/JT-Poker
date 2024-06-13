@@ -136,7 +136,7 @@ class HandTracker(object):
             # allocate cards to player
             self.players[name]["cards"].extend(cards)
             print("*******Hand_tracker def AssignCards hand with cards:", name, self.players[name]["cards"])
-            card_images = [card.get_CardImages() for card in cards]
+            card_images = [card.card_image for card in cards]
             print("*******Hand_tracker def AssignCards card images:", name, card_images)
             self.players[name]["card_images"].extend(card_images)
         except KeyError:
@@ -164,7 +164,11 @@ class HandTracker(object):
         try:
             # unallocate cards from player
             self.players[name]["cards"] = [card for card in self.Hand(name) if card not in cards]
-            print("*******Hand_tracker def UnassignCards hand without cards:", name, self.players[name]["cards"])
+            # unallocate card_images from player
+            self.players[name]["card_images"] = [] # Assuming card_images is a list
+            card_images = [card.card_image for card in self.players[name]["cards"]]
+            self.players[name]["card_images"].extend(card_images)
+            print("*******Hand_tracker def UnassignCards hand after discard but before new cards:", name, self.players[name]["cards"], self.players[name]["card_images"])
             
             # Update card images based on remaining cards
             #remaining_card_images = Card.get_images_from_cards_str(remaining_cards)

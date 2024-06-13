@@ -69,13 +69,10 @@ class Card(object):
 
         self.value_r, self.suit_r, self.suit_img_r = self.VALUES[value], self.SUITS[suit], self.IMG_SUITS[suit]
         self.r = self.value_r + self.suit_r
-        self.card_images = f"{self.value_r}{self.suit_img_r}.png"
+        self.card_image = f"{self.value_r}{self.suit_img_r}.png"
 
         # store input parameters
         self.value_i, self.suit_i = value, suit
-    
-    def get_CardImages(self):
-        return self.card_images
     
     def __repr__(self):
         """Displays the card value and card suit when the card object is printed."""
