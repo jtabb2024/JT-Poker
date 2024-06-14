@@ -282,15 +282,15 @@ class Dealer(object):
         return self.seats.TrackedPlayers()
 
     def DealingOrder(self):
-        # determine order that players should take turns postflop
+        # determine order that players should take turns post-draw
         return list(self.seats)
 
-    def PreflopOrder(self):
-        # determine order that players should take turns preflop
+    def PredrawOrder(self):
+        # determine order that players should take turns pre-draw
         name = self.DealingOrder()[2 % len(self.TrackedPlayers())]
         seat = self.seats.players[name]
         queue = [name for name in self.seats.seats[seat:] + self.seats.seats[:seat] if name]
-        # return order that players should take turns preflop
+        # return order that players should take turns pre-draw
         return queue
 
     def SkintPlayers(self):
