@@ -150,7 +150,6 @@ class MessageTracker:
                 # rank_n = player_data['hand']['rank_n']
                 # rank_c = player_data['hand']['rank_c']
                 # status = player_data['status']
-                # handimages = player_data['handimages']
                 self.send_lb_message(f"Seat: {seat}")
                 self.send_lb_message(f"Stack: {stack}")
                 self.send_lb_message(f"Contribution: {contribution}")
@@ -159,11 +158,10 @@ class MessageTracker:
                 # self.send_lb_message(f"Rank N: {rank_n}")
                 # self.send_lb_message(f"Rank C: {rank_c}")
                 # self.send_lb_message(f"Status: {status}")
-                # self.send_lb_message(f"Hand Images: {handimages}")
                 #self.broadcast_player_info(f"{player_info}")
         
     def broadcast_player_info(self, player_info):
-        # Game State that will be sent to the poker game window (player info, player actions, etc.
+        # Game State that will be sent to the poker game window player info
         channel_layer = get_channel_layer()
         async_to_sync(channel_layer.group_send)(
         'poker_group',  # Group name

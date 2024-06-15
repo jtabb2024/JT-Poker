@@ -81,7 +81,7 @@ html, body {
     background-position: center; /* Center the image */
     background-repeat: no-repeat; /* Do not repeat the image */
 }
-.top-bots {
+.all-bots-container {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -96,7 +96,7 @@ html, body {
     max-width: 600px;
     margin: 0 auto; /* Center horizontally */
 }
-.bot-container {
+.second-row-bot-container {
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 1em;
@@ -106,6 +106,19 @@ html, body {
     background-color: #ddd;
     padding: 1em;
     height: 4em;
+    overflow: hidden;
+    text-align: center;
+}
+.bot1card {
+    position: relative;
+    cursor: pointer;
+    background: none; /* Remove white box */
+    display: inline-block;
+    text-decoration: none; /* Remove lines under images */
+    padding: 0; /* Remove default padding */
+    border: none; /* Remove default border */
+    width: 40px; /* Match the width of the image */
+    height: auto; /* Make the div only as tall as the image */
 }
 .player {
     padding: 1em;
@@ -113,7 +126,37 @@ html, body {
     text-align: center;
     height: 18em;
 }
-#cards-container {
+#playercards-container {
+    padding: 15px;
+    overflow: hidden;
+    flex-grow: 1;
+    display: flex;
+    justify-content: center; /* Center the cards horizontally */
+    align-items: flex-end; /* Align cards towards the bottom */
+    gap: 10px; /* Space between cards */
+    padding-bottom: 50px; /* Space above the bottom of the cards element */
+}
+#bot1cards-container {
+    padding: 5px;
+    overflow: hidden;
+    flex-grow: 1;
+    display: flex;
+    justify-content: center; /* Center the cards horizontally */
+    align-items: flex-end; /* Align cards towards the bottom */
+    gap: 10px; /* Space between cards */
+    padding-bottom: 10px; /* Space above the bottom of the cards element */
+}
+#bot2cards-container {
+    padding: 15px;
+    overflow: hidden;
+    flex-grow: 1;
+    display: flex;
+    justify-content: center; /* Center the cards horizontally */
+    align-items: flex-end; /* Align cards towards the bottom */
+    gap: 10px; /* Space between cards */
+    padding-bottom: 50px; /* Space above the bottom of the cards element */
+}
+#bot3cards-container {
     padding: 15px;
     overflow: hidden;
     flex-grow: 1;
@@ -159,6 +202,20 @@ html, body {
 }
 .card img {
     width: 100px;
+    height: auto;
+    display: block;
+}
+.bot1card button {
+    display: block;
+    padding: 0;
+    border: none;
+    background: none;
+    width: 40px;
+    height: auto;
+    cursor: pointer;
+}
+.bot1card img {
+    width: 40px;
     height: auto;
     display: block;
 }
