@@ -85,13 +85,14 @@ html, body {
     display: flex;
     flex-direction: column;
     align-items: center;
+    overflow: hidden;
     gap: 1em;
 }
 .bot2 {
-    background-color: #ddd;
     padding: 1em;
+    overflow: hidden;
     text-align: center;
-    height: 4em;
+    height: 10em;
     width: 100%;
     max-width: 600px;
     margin: 0 auto; /* Center horizontally */
@@ -100,16 +101,16 @@ html, body {
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 1em;
+    overflow: hidden;
     width: 100%;
 }
 .bot1, .bot3 {
-    background-color: #ddd;
     padding: 1em;
-    height: 4em;
+    height: 10em;
     overflow: hidden;
     text-align: center;
 }
-.bot1card {
+.botcard {
     position: relative;
     cursor: pointer;
     background: none; /* Remove white box */
@@ -137,6 +138,26 @@ html, body {
     padding-bottom: 50px; /* Space above the bottom of the cards element */
 }
 #bot1cards-container {
+    padding: 1px;
+    overflow: hidden;
+    flex-grow: 1;
+    display: flex;
+    justify-content: center; /* Center the cards horizontally */
+    align-items: flex-end; /* Align cards towards the bottom */
+    gap: 10px; /* Space between cards */
+    padding-bottom: 1px; /* Space above the bottom of the cards element */
+}
+#bot2cards-container {
+    padding: 1px;
+    overflow: hidden;
+    flex-grow: 1;
+    display: flex;
+    justify-content: center; /* Center the cards horizontally */
+    align-items: flex-end; /* Align cards towards the bottom */
+    gap: 10px; /* Space between cards */
+    padding-bottom: 1px; /* Space above the bottom of the cards element */
+}
+#bot3cards-container {
     padding: 5px;
     overflow: hidden;
     flex-grow: 1;
@@ -144,27 +165,7 @@ html, body {
     justify-content: center; /* Center the cards horizontally */
     align-items: flex-end; /* Align cards towards the bottom */
     gap: 10px; /* Space between cards */
-    padding-bottom: 10px; /* Space above the bottom of the cards element */
-}
-#bot2cards-container {
-    padding: 15px;
-    overflow: hidden;
-    flex-grow: 1;
-    display: flex;
-    justify-content: center; /* Center the cards horizontally */
-    align-items: flex-end; /* Align cards towards the bottom */
-    gap: 10px; /* Space between cards */
-    padding-bottom: 50px; /* Space above the bottom of the cards element */
-}
-#bot3cards-container {
-    padding: 15px;
-    overflow: hidden;
-    flex-grow: 1;
-    display: flex;
-    justify-content: center; /* Center the cards horizontally */
-    align-items: flex-end; /* Align cards towards the bottom */
-    gap: 10px; /* Space between cards */
-    padding-bottom: 50px; /* Space above the bottom of the cards element */
+    padding-bottom: 5px; /* Space above the bottom of the cards element */
 }
 .card {
     position: relative;
@@ -205,7 +206,7 @@ html, body {
     height: auto;
     display: block;
 }
-.bot1card button {
+.botcard button {
     display: block;
     padding: 0;
     border: none;
@@ -214,7 +215,7 @@ html, body {
     height: auto;
     cursor: pointer;
 }
-.bot1card img {
+.botcard img {
     width: 40px;
     height: auto;
     display: block;

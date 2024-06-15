@@ -106,17 +106,28 @@
         }
 
         function handleUpdateBotDealCards() {
-            const cardsbotContainer = document.getElementById('bot1cards-container');
-            cardsbotContainer.innerHTML = ''; // Clear previous card images
-            for (let i = 0; i < 5; i++) {
-                const botcardDiv = document.createElement('div');
-                botcardDiv.className = 'bot1card';
-                const button = document.createElement('button');
-                const img = document.createElement('img');
-                img.src = staticUrl + 'CardBack.png';
-                button.appendChild(img);
-                botcardDiv.appendChild(button);
-                cardsbotContainer.appendChild(botcardDiv);
+            for (let i = 0; i < 3; i++) {
+                let cardsbotContainer;
+                if (i === 0) {
+                    cardsbotContainer = document.getElementById('bot1cards-container');
+                } else if (i === 1) {
+                    cardsbotContainer = document.getElementById('bot2cards-container');
+                } else {
+                    cardsbotContainer = document.getElementById('bot3cards-container');
+                }
+                // Clear previous card images once per bot
+                cardsbotContainer.innerHTML = '';
+        
+                for (let j = 0; j < 5; j++) {
+                    const botcardDiv = document.createElement('div');
+                    botcardDiv.className = 'botcard';
+                    const button = document.createElement('button');
+                    const img = document.createElement('img');
+                    img.src = staticUrl + 'CardBack.png'; // Ensure staticUrl is defined
+                    button.appendChild(img);
+                    botcardDiv.appendChild(button);
+                    cardsbotContainer.appendChild(botcardDiv);
+                }
             }
         }
     
