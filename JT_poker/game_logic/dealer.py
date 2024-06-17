@@ -94,7 +94,7 @@ class Dealer(object):
                 print(f"[ANTE] {name} paid {amount} chips for the ante.")
                 self.mtracker.send_lb_message(f"{name} paid {amount} chips for the ante.")
             self.mtracker.send_lb_message("TakeAnte")
-            self.mtracker.send_player_state(self.PlayerInfo())
+            self.mtracker.send_state_playerinfo(self.PlayerInfo())
     
     def TakeBet(self, name, amount):
         # act on bet request and return success or not

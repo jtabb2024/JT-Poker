@@ -148,7 +148,7 @@ class MessageTracker:
                 contribution = player_data['chips']['contribution']
                 self.send_lb_message(f"Contribution: {contribution}")
                 # Need to check if each dictionary item exists before trying to access it
-                if player_data['hand']:
+                if 'hand' in player_data:
                     cards = player_data['hand']['cards']
                     card_images = player_data['hand']['card_images']
                     rank_n = player_data['hand']['rank_n']
@@ -157,7 +157,7 @@ class MessageTracker:
                     self.send_lb_message(f"Card Images: {card_images}")
                     self.send_lb_message(f"Rank N: {rank_n}")
                     self.send_lb_message(f"Rank C: {rank_c}")
-                if player_data['status']:
+                if 'status' in player_data:
                     status = player_data['status']
                     self.send_lb_message(f"Status: {status}")              
                 #self.broadcast_player_info(f"{player_info}")
