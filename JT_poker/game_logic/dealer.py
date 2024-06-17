@@ -109,15 +109,15 @@ class Dealer(object):
             if status["has_raised"] and status["has_allin"]:
                 self.action.ExtendRound()
                 self.action.SetAllIn(name)
-                surplass = amount - self.chips.CallAmount(name) 
-                print(f"[ACTION] {name} has raised by {surplass} and gone all-in!")
-                self.mtracker.send_lb_message(f"{name} has raised by {surplass} and gone all-in!")
+                surplus = amount - self.chips.CallAmount(name) 
+                print(f"[ACTION] {name} has raised by {surplus} and gone all-in!")
+                self.mtracker.send_lb_message(f"{name} has raised by {surplus} and gone all-in!")
             elif status["has_raised"] and status["has_mincalled"]:
                 self.action.ExtendRound()
                 self.action.SetMinCalled(name)
-                surplass = amount - self.chips.CallAmount(name) 
-                print(f"[ACTION] {name} has raised by {surplass}.")
-                self.mtracker.send_lb_message(f"{name} has raised by {surplass}.")
+                surplus = amount - self.chips.CallAmount(name) 
+                print(f"[ACTION] {name} has raised by {surplus}.")
+                self.mtracker.send_lb_message(f"{name} has raised by {surplus}.")
             elif status["has_allin"] and status["has_mincalled"]:
                 self.action.SetAllIn(name)
                 print(f"[ACTION] {name} has gone all-in to call!")

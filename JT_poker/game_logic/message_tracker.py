@@ -22,67 +22,67 @@ class MessageTracker:
             cls._instance = cls()
         return cls._instance
         
-    def send_tableview(self, table_view):
+    def send_state_tableview(self, table_view):
         # Game State that will be sent to the poker game window (table view, etc.)
         pass
         
-    def send_pot(self, pot_amount):
+    def send_state_pot(self, pot_amount):
         # Int representing the amount of chips in the pot for the poker game window
         pass
         
-    def send_player_chips(self, name, player_chips):
+    def send_state_player_chips(self, name, player_chips):
         # Int representing the amount of chips the player has for the poker game window
         pass
 
-    def send_player_bet(self, name, player_bet):
+    def send_state_player_bet(self, name, player_bet):
         # Int representing the amount of chips the player has bet for the poker game window
         pass
         
-    def send_player_action(self, name, player_action):
+    def send_state_player_action(self, name, player_action):
         # String representing the action the player took for the poker game window
         pass
         
-    def send_player_hand(self, name, player_hand):
+    def send_state_player_hand(self, name, player_hand):
         # List of strings representing the cards the player has for the poker game window
         pass
         
-    def send_player_status(self, name, player_status):
+    def send_state_player_status(self, name, player_status):
         # String representing the status of the player for the poker game window
         pass
         
-    def send_player_turn(self, name, player_turn):
+    def send_state_player_turn(self, name, player_turn):
         # Boolean representing if it is the player's turn for the poker game window
         pass
         
-    def send_player_winner(self, name, player_winner):
+    def send_state_player_winner(self, name, player_winner):
         # Boolean representing if the player is the winner for the poker game window
         pass
         
-    def send_player_fold(self, name, player_fold):
+    def send_state_player_fold(self, name, player_fold):
         # Boolean representing if the player has folded for the poker game window
         pass
         
-    def send_player_allin(self, name, player_allin):
+    def send_state_player_allin(self, name, player_allin):
         # Boolean representing if the player has gone all in for the poker game window
         pass
         
-    def send_player_mincall(self, name, player_mincall):
+    def send_state_player_mincall(self, name, player_mincall):
         # Boolean representing if the player has made the minimum call for the poker game window
         pass
     
-    def send_player_raise(self, name, player_raise):
+    def send_state_player_raise(self, name, player_raise):
         # Boolean representing if the player has raised for the poker game window
         pass
         
-    def send_player_call(self, name, player_call):
+    def send_state_player_call(self, name, player_call):
         # Boolean representing if the player has called for the poker game window
         pass
         
-    def send_player_check(self, name, player_check):
+    def send_state_player_check(self, name, player_check):
         # Boolean representing if the player has checked for the poker game window
         pass
         
-    def send_player_discard(self, name, player_discard):
+    def send_state_player_discard(self, name, player_discard):
         # List of strings representing the cards the player has discarded for the poker game window
         pass
 
@@ -135,29 +135,31 @@ class MessageTracker:
             }
         )
         
-    def send_player_state(self, player_info):
+    def send_state_playerinfo(self, player_info): # add update_all=false, name=none, update_item=none
+        #update_item can equal (chips, bet, action, hand, status, turn, winner, fold, allin, mincall, raise, call, check, discard)  
         for player_name, player_data in player_info.items():
             #if player_name == name:
                 self.send_lb_message(f"Processing data for {player_name}")
                 #print(f"Processing data for {player_name}")
-                #print(player_info)
                 seat = player_data['seat']
-                stack = player_data['chips']['stack']
-                contribution = player_data['chips']['contribution']
-                # Need to check if each dictionary item exists before trying to access it
-                # cards = player_data['hand']['cards']
-                # card_images = player_data['hand']['card_images']
-                # rank_n = player_data['hand']['rank_n']
-                # rank_c = player_data['hand']['rank_c']
-                # status = player_data['status']
                 self.send_lb_message(f"Seat: {seat}")
+                stack = player_data['chips']['stack']
                 self.send_lb_message(f"Stack: {stack}")
+                contribution = player_data['chips']['contribution']
                 self.send_lb_message(f"Contribution: {contribution}")
-                # self.send_lb_message(f"Cards: {cards}")
-                # self.send_lb_message(f"Card Images: {card_images}")
-                # self.send_lb_message(f"Rank N: {rank_n}")
-                # self.send_lb_message(f"Rank C: {rank_c}")
-                # self.send_lb_message(f"Status: {status}")
+                # Need to check if each dictionary item exists before trying to access it
+                if player_data['hand']:
+                    cards = player_data['hand']['cards']
+                    card_images = player_data['hand']['card_images']
+                    rank_n = player_data['hand']['rank_n']
+                    rank_c = player_data['hand']['rank_c']
+                    self.send_lb_message(f"Cards: {cards}")
+                    self.send_lb_message(f"Card Images: {card_images}")
+                    self.send_lb_message(f"Rank N: {rank_n}")
+                    self.send_lb_message(f"Rank C: {rank_c}")
+                if player_data['status']:
+                    status = player_data['status']
+                    self.send_lb_message(f"Status: {status}")              
                 #self.broadcast_player_info(f"{player_info}")
         
     def broadcast_player_info(self, player_info):
