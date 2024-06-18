@@ -132,6 +132,7 @@
         }
     
         function handleUpdatePlayerCardImages(data) {
+            // I think this is where the displayedCardImages array should be cleared
             const cardsContainer = document.getElementById('playercards-container');
             cardsContainer.innerHTML = ''; // Clear previous card images
             data.card_images.forEach((card, index) => {
