@@ -10,7 +10,7 @@ from .action_tracker import ActionTracker
 from .message_tracker import MessageTracker
 
 class Dealer(object):
-    def __init__(self, num_seats=6):
+    def __init__(self, num_seats=3):
         # initialise trackers
         self.hands = HandTracker()
         self.seats = SeatTracker(num_seats)
@@ -33,6 +33,11 @@ class Dealer(object):
     def DealHands(self):
         # determine players in the round and begin tracking
         names = self.seats.players
+        print(f"((((((((SEATS)))))))): {list(self.seats)}")
+        seating = self.seats.OccupiedSeats()
+        print(f"((((((((SEATING)))))))): {seating}")
+        seatmapping = self.seats.GetPlayerSeatMapping()
+        print(f"((((((((SEATMAPPING)))))))): {seatmapping}")
         self.hands.TrackPlayers(names)
         # deal and evaluate hands and log
         self.hands.DealPlayersIn()

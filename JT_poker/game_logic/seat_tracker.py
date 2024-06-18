@@ -41,7 +41,7 @@ class SeatTracker(object):
         
 
     """
-    def __init__(self, amount_seats : int = 5):
+    def __init__(self, amount_seats : int = 4):
         """
         Constructs all the necessary attributes for the seattracker object.
 
@@ -262,4 +262,15 @@ class SeatTracker(object):
         """
         return [i for i, occupant in enumerate(self.seats) if occupant]
 
+    def GetPlayerSeatMapping(self) -> dict[str, int]:
+        """
+        Provides a mapping of player names to their occupied seats.
+
+        Returns
+        -------
+        dict[str, int]
+         A dictionary where keys are player names and values are their seat numbers.
+        """
+        # This directly uses the self.players dictionary, assuming it maps player names to their seat numbers.
+        return {name: seat for name, seat in self.players.items() if seat is not None}
 
