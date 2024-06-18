@@ -45,7 +45,7 @@ class Dealer(object):
         print(f"[HANDS] Hands have been dealt.")
         self.mtracker.send_lb_message(f"Cards have been dealt.")
         for name in names:
-            if name in self.action.beings["humans"]:
+            if name in self.action.playertype["humans"]:
                     hand = self.hands.Hand(name)
                     handimages = self.hands.HandImages(name)
                     self.mtracker.send_lb_message(f"This is the DealHands Human player hand: {hand}")
@@ -182,7 +182,7 @@ class Dealer(object):
                 info["self"]["status"] = self.action.players[name]
                 info["self"]["hand"] = self.hands.players[name]
                 #info["self"]["handimages"] = self.hands.HandImages(name)
-                if name in self.action.beings["humans"]:
+                if name in self.action.playertype["humans"]:
                     # Get the 'hand' part of the info dictionary for the viewer
                     viewer_hand = info["self"].get("hand", [])
                     # Add the viewer's hand to the message tracker

@@ -10,7 +10,7 @@ class ActionTracker(object):
     def __init__(self):
         # initialise players and species tracker
         self.players = {}
-        self.beings = {"humans" : [], "bots" : []}
+        self.playertype = {"humans" : [], "bots" : []}
         # Get the MessageTracker instance
         self.mtracker = MessageTracker.instance()
 
@@ -36,16 +36,16 @@ class ActionTracker(object):
     def AddHumans(self, names):
         # start tracking humans
         for name in names:
-            self.beings["humans"].append(name)
+            self.playertype["humans"].append(name)
     
     def AddBots(self, names):
         # start tracking bots
         for name in names:
-            self.beings["bots"].append(name)
+            self.playertype["bots"].append(name)
 
     def KickBot(self, name):
         # stop tracking bot
-        self.beings["bots"].remove(name)
+        self.playertype["bots"].remove(name)
         if name in self.players:
             del self.players[name]
 
@@ -59,7 +59,7 @@ class ActionTracker(object):
 
     def SelectAmount(self, name, info):
         # determine species and get a bet amount request
-        if name in self.beings["humans"]:
+        if name in self.playertype["humans"]:
             print(f"[INFO] Your cards are {info['self']['hand']['cards']}")
             self.mtracker.send_lb_message(f"{name}: Your cards are {info['self']['hand']['cards']}")
             print(f"[INFO] There are {info['game']['pot']} chips in the pot.")
@@ -76,7 +76,7 @@ class ActionTracker(object):
 
     def SelectDiscards(self, name, info):
         # determine species to ask for discards from
-        if name in self.beings["humans"]:
+        if name in self.playertype["humans"]:
             # give info and get user input from human
             print(f"[INFO] Your cards are {info['self']['hand']['cards']}")
             self.mtracker.send_lb_message(f"{name}: Your cards are {info['self']['hand']['cards']}")

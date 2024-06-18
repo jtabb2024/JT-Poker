@@ -30,7 +30,7 @@ class PlayGame(object):
         # gameloop
         while self.NewHand():
             self.BettingPhase("pre-draw")
-            if self.dealer.action.beings["humans"] == [self.HUMAN]:
+            if self.dealer.action.playertype["humans"] == [self.HUMAN]:
                 self.mtracker.send_lb_message(f"Bet has been placed by Human")
                 self.print_playerinfo(self.dealer.PlayerInfo())
             self.SwitchingPhase()
