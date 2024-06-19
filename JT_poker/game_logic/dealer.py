@@ -36,7 +36,7 @@ class Dealer(object):
         print(f"((((((((SEATS)))))))): {list(self.seats)}")
         seating = self.seats.OccupiedSeats()
         print(f"((((((((SEATING)))))))): {seating}")
-        seatmapping = self.seats.GetPlayerSeatMapping("Jeff")
+        seatmapping = self.seats.GetPlayerSeatMapping("0")
         print(f"((((((((SEATMAPPING)))))))): {seatmapping}")
         self.hands.TrackPlayers(names)
         # deal and evaluate hands and log
@@ -155,7 +155,7 @@ class Dealer(object):
         for name in self.seats.players:
             info[name] = {}
             info[name]["seat"] = self.seats.players[name]
-            info[name]["seatmapping"] = self.seats.GetPlayerSeatMapping("Jeff", name)
+            info[name]["seatmapping"] = self.seats.GetPlayerSeatMapping("0", name)
             info[name]["chips"] = self.chips.players[name]
             if name in self.hands.players:
                 info[name]["hand"] = self.hands.players[name]

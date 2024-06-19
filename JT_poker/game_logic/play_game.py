@@ -3,7 +3,7 @@ from .message_tracker import MessageTracker
 
 class PlayGame(object):
 
-    def __init__(self, chips=500, ante=5, opponents=["John Wayne", "Stephen Baker", "Ted Williams"]):
+    def __init__(self, chips=500, ante=5, opponents=["1", "2", "3"]):
 
         # Get the message_tracker game instance 
         self.mtracker = MessageTracker.instance() 
@@ -17,7 +17,7 @@ class PlayGame(object):
         self.dealer = Dealer(len(self.OPPONENTS) + 1)
         # get name and begin tracking human
         #player = input("What's your name?")
-        player = "Jeff"
+        player = "0"
         self.HUMAN = player
         # initialise table and economy
         self.dealer.InitializeTable([player], self.OPPONENTS, self.CHIPS)
