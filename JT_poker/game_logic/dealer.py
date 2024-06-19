@@ -155,14 +155,12 @@ class Dealer(object):
         for name in self.seats.players:
             info[name] = {}
             info[name]["seat"] = self.seats.players[name]
-            info[name]["seatmapping"] = self.seats.GetPlayerSeatMapping("Jeff")
+            info[name]["seatmapping"] = self.seats.GetPlayerSeatMapping("Jeff", name)
             info[name]["chips"] = self.chips.players[name]
             if name in self.hands.players:
                 info[name]["hand"] = self.hands.players[name]
-                #info[name]["hand"]["cards"] = [str(card) for card in info[name]["hand"]["cards"]] <--- this causes a major bug
             if name in self.action.players:
                 info[name]["status"] = self.action.players[name]
-                #info[name]["handimages"] = self.hands.HandImages(name)
         # log missing info
         if not self.action.players:
             print(f"[WARNING] Nobody has a status.")
@@ -316,6 +314,7 @@ class Dealer(object):
         # seat players
         players = humans + bots
         shuffle(players)
+        print(f"[Dealer Initialize] Players: {players}")
         self.SeatPlayers(players)
         # track species
         self.action.AddHumans(humans)

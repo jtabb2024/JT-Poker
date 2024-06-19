@@ -262,7 +262,7 @@ class SeatTracker(object):
         """
         return [i for i, occupant in enumerate(self.seats) if occupant]
 
-    def GetPlayerSeatMapping(self, human_name) -> dict[str, int]:
+    def GetPlayerSeatMapping(self, human_name, lookupname = None) -> dict[str, int]:
         """
         Provides a mapping of player names to their occupied seats.
         Returns
@@ -275,6 +275,7 @@ class SeatTracker(object):
 
         # Find the human player's seat number
         human_seat = self.players.get(human_name)
+        print(f"SEATTRRACKER MAPPING self.players: {self.players} human_name: {human_name} human_seat: {human_seat}")
 
         # Assign the UI_key for the human player and bots
         for name, seat in self.players.items():
@@ -283,10 +284,13 @@ class SeatTracker(object):
                     # Mark the human player
                     seatmapping[name] = {"seat": seat, "UI_key": "HPlayer"}
                 else:
+                    print(f"SEATTRACKER Getmapping Seat: {seat}, Human Seat: {human_seat}")
                     # Calculate the bot's UI_key based on its seat relative to the human player's seat
                     # Adjust bot_index to start from 1 instead of 0
                     bot_index = ((seat - human_seat - 1) % len(self.players)) + 1
                     seatmapping[name] = {"seat": seat, "UI_key": f"Bot{bot_index}"}
-
-        return seatmapping
+        if lookupname:
+            return seatmapping[lookupname]
+        else:
+            return seatmapping
 
