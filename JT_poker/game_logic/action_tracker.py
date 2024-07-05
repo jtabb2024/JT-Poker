@@ -71,7 +71,10 @@ class ActionTracker(object):
             amount = int(input("How much would you like to put in the pot?"))
             self.mtracker.send_lb_message("How much would you like to put in the pot?")
         else:
-            amount = choice([0, info['self']['chips']['stack'], info['game']['call'], info['game']['pot'], 2*info['game']['pot'], 2*info['game']['call']])
+            #Oringinal code with all-in and raising the amount of the pot, etc. options - this has been replaced with a slower game version only
+            #allowing a bot to bet up to 2 * the call amount
+            #amount = choice([0, info['self']['chips']['stack'], info['game']['call'], info['game']['pot'], 2*info['game']['pot'], 2*info['game']['call']])
+            amount = choice([0, info['game']['call'], 2*info['game']['call']])
         return amount
 
     def SelectDiscards(self, name, info):
