@@ -13,7 +13,6 @@ class MessageTracker:
 
     def __init__(self):
         if not self._initialized:
-            self.card_images = []  # initialize card images list
             self._initialized = True
 
     @classmethod
@@ -85,16 +84,6 @@ class MessageTracker:
     def send_state_player_discard(self, name, player_discard):
         # List of strings representing the cards the player has discarded for the poker game window
         pass
-
-    def broadcast_messages(self):
-        channel_layer = get_channel_layer()
-        async_to_sync(channel_layer.group_send)(
-            'poker_group',  # Group name
-            {
-                'type': 'update_messages',
-                'message': self.get_messages(),
-            }
-        )
         
     def send_lb_message(self, lb_message, player_info=None):
         # Wait for x seconds this is just a test and should be moved elsewhere and time import should be removed
@@ -112,26 +101,19 @@ class MessageTracker:
                 'message': lb_message,
             }
         )
+    
+    def send_card_images(self, card_images, name):
+        # Game State that will be sent to the poker game window card images
+        self.broadcast_card_images(card_images, name)
 
-    def add_card_images(self, images):  # add card images
-        print('************Adding card images:', images)  # Log the images being added
-        self.card_images.extend(images)
-        self.broadcast_card_images()
-
-    def get_card_images(self):
-        return self.card_images
-
-    def clear_card_images(self):  # clear card images
-        self.card_images.clear()
-        self.broadcast_card_images()
-
-    def broadcast_card_images(self):
+    def broadcast_card_images(self, card_images, name):
         channel_layer = get_channel_layer()
         async_to_sync(channel_layer.group_send)(
             'poker_group',  # Group name
             {
                 'type': 'update_card_images',
-                'card_images': self.get_card_images(),
+                'card_images': card_images,
+                'name': name
             }
         )
         

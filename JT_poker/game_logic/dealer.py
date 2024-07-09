@@ -47,10 +47,10 @@ class Dealer(object):
         for name in names:
             if name in self.action.playertype["humans"]:
                     hand = self.hands.Hand(name)
-                    handimages = self.hands.HandImages(name)
+                    handimages = self.hands.players[name]["card_images"]
                     self.mtracker.send_lb_message(f"This is the DealHands Human player hand: {hand}")
                     self.mtracker.send_lb_message(f"This is the DealHands Human player hand image names: {handimages}")
-                    self.mtracker.add_card_images(handimages)
+                    self.mtracker.send_card_images(handimages, name)
         # initialise player statuses
         self.action.NewRound(names)
         # debug info below only

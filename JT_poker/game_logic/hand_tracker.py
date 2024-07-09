@@ -493,17 +493,6 @@ class HandTracker(object):
         """
         Provides the hand images (image names of each card) of a player being tracked.
         """
-        #try:
-            #imagehand = self.Hand(name)
-            #card_images = [card.get_CardImages() for card in imagehand]  # This should already be flat
-            
-            # Flatten the list if it is nested
-            #if card_images and isinstance(card_images[0], list):
-                #card_images = [img for sublist in card_images for img in sublist]
-            
-            #return card_images
-        #except KeyError:
-            #raise KeyError(f"{name} is not being tracked.")
         try:
             return self.players[name]["card_images"]
         except KeyError:
