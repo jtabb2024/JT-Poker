@@ -61,3 +61,10 @@ class PokerConsumer(AsyncWebsocketConsumer):
             'player_info': player_info
         }))
 
+    async def update_gamepot(self, event):
+        pamount = event.get('pot_amount',0)
+        print("update_game_pot", pamount)
+        await self.send(text_data=json.dumps({
+            'type': 'update_gamepot',
+            'amount': pamount
+        }))

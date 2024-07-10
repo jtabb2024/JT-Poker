@@ -27,7 +27,17 @@ class MessageTracker:
         
     def send_state_pot(self, pot_amount):
         # Int representing the amount of chips in the pot for the poker game window
-        pass
+        self.broadcast_game_pot(pot_amount)
+    
+    def broadcast_game_pot(self, pot_amount):
+        channel_layer = get_channel_layer()
+        async_to_sync(channel_layer.group_send)(
+            'poker_group',  # Group name
+            {
+                'type': 'update_gamepot',
+                'pot_amount': pot_amount,
+            }
+        )
         
     def send_state_player_chips(self, name, player_chips):
         # Int representing the amount of chips the player has for the poker game window

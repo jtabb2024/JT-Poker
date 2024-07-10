@@ -179,9 +179,9 @@ html, body {
     height: auto; /* Make the div only as tall as the image */
 }
 #game-pot {
-    background-color: #bbb;
     width: 300px;
     height: 100px;
+    overflow: hidden;
     margin: auto; /* Center horizontally */
     display: flex;
     align-items: center;

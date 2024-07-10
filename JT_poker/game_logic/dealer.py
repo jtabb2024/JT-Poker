@@ -144,6 +144,9 @@ class Dealer(object):
                 print(f"[ACTION] {name} couldn't call but has gone all-in.")
                 self.mtracker.send_lb_message(f"{name} couldn't call but has gone all-in.")
             self.chips.Bet(name, amount)
+            pamount = self.chips.PotAmount()
+            print(f"&&&&&&&&&&&&&&&&&& The pot is now {pamount} chips.")
+            self.mtracker.send_state_pot(self.chips.PotAmount())
             return True
         else:
             return False

@@ -105,6 +105,18 @@
             messagesContainer.scrollTop = messagesContainer.scrollHeight;
         }
 
+        function handleUpdateGamepot(data) {
+            console.log('handleUpdateGamepot called with data:', data); // Debugging line
+            const Potdiv = document.getElementById('game-pot');
+            if (!Potdiv) {
+                console.error('Game pot div not found!');
+                return;
+            }
+            const total_pot = data.amount;
+            console.log('Updating game pot to:', total_pot); // Debugging line
+            Potdiv.textContent = total_pot;
+        }
+
         function handleUpdateBotDealCards() {
             for (let i = 0; i < 3; i++) {
                 let cardsbotContainer;
@@ -260,6 +272,8 @@
                 if (deal) {
                     handleUpdateBotDealCards();
                 }
+            } else if (data.type === 'update_gamepot') {
+                handleUpdateGamepot(data);
             } else if (data.type === 'disable_buttons') {
                 disableButtons();
             }
