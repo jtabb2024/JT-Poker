@@ -67,6 +67,20 @@ html, body {
     border: none;
     cursor: pointer;
 }
+#action-button {
+    padding: 10px 20px; /* Add some padding */
+    border-radius: 5px; /* Rounded edges */
+    width: 100px; /* Fixed width */
+    height: 40px; /* Fixed height */
+    display: flex;
+    justify-content: center; /* Center text horizontally */
+    align-items: center; /* Center text vertically */
+    text-align: center; /* Center text inside the button */
+    background-color: #007bff;
+    color: white;
+    border: none;
+    cursor: pointer;
+}
 #pokertable {
     background-color: #008000; /* Darker green color */
     display: grid;
