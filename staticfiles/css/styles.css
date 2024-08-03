@@ -67,7 +67,14 @@ html, body {
     border: none;
     cursor: pointer;
 }
-#action-button {
+#action-options {
+    display: flex;
+    justify-content: center; /* Center buttons horizontally */
+    align-items: center; /* Center buttons vertically */
+    gap: 10px; /* Space between buttons */
+    margin-top: 20px; /* Space between cards and buttons */
+}
+#action-options .action-button {
     padding: 10px 20px; /* Add some padding */
     border-radius: 5px; /* Rounded edges */
     width: 100px; /* Fixed width */
@@ -80,6 +87,7 @@ html, body {
     color: white;
     border: none;
     cursor: pointer;
+    margin: 5px; /* Add some margin between buttons */
 }
 #pokertable {
     background-color: #008000; /* Darker green color */
@@ -149,7 +157,7 @@ html, body {
     justify-content: center; /* Center the cards horizontally */
     align-items: flex-end; /* Align cards towards the bottom */
     gap: 10px; /* Space between cards */
-    padding-bottom: 50px; /* Space above the bottom of the cards element */
+    padding-bottom: 10px; /* Space above the bottom of the cards element */
 }
 #bot1cards-container {
     padding: 1px;
@@ -194,7 +202,9 @@ html, body {
 }
 #game-pot {
     width: 300px;
-    height: 100px;
+    height: 50px;
+    max-width: 300px;
+    max-height: 50px;
     overflow: hidden;
     margin: auto; /* Center horizontally */
     display: flex;
